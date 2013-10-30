@@ -1,4 +1,6 @@
-(defconst emacs-add-dir "~/emacs-add")
+(when (eq system-type 'windows-nt) (set-frame-font "Consolas"))
+
+(defconst emacs-add-dir "D:/motoki/work/misc/emacs-add")
 
 ;; ----- unbinded keys -----
 (global-unset-key (kbd "C-/"))
@@ -37,8 +39,12 @@
 (add-hook 'find-file-hook (lambda () (linum-mode t)))
 
 ;; ----- shell, interpreter -----
-(add-hook 'sh-mode-hook
-          '(lambda () (setq truncate-lines nil)))
+(defun truncate-lines-nil () 
+  (lambda () (setq truncate-lines nil)))
+
+(add-hook 'shell-mode-hook (truncate-lines-nil))
+(add-hook 'ielm-mode-hook (truncate-lines-nil))
+(add-hook 'eshell-mode-hook (truncate-lines-nil))
 (global-set-key (kbd "C-/ C-i") 'ielm)
 
 ;; ----- file coding system -----
@@ -51,9 +57,18 @@
 
 
 ;; ----- edit mode -----
-;(add-to-list 'load-path (concat emacs-add-dir "/editors"))
-;
-;(require 'qml-simple-mode)
+(add-to-list 'load-path (concat emacs-add-dir "/editors"))
+
+(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+;; unbinded keys M-<down>, M-<up>
+(add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+(add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+(add-hook 'ielm-mode-hook             #'enable-paredit-mode)
+(add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+(add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+(add-hook 'scheme-mode-hook           #'enable-paredit-mode)
+
+(require 'qml-simple-mode)
 ;(add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-simple-mode))
 
 ;; ----- tab, indent -----
