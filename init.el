@@ -1,6 +1,6 @@
 (when (eq system-type 'windows-nt) (set-frame-font "Consolas"))
 
-(defconst emacs-add-dir "D:/motoki/work/misc/emacs-add")
+(defconst emacs-add-dir "~/emacs-add")
 
 ;; ----- unbinded keys -----
 (global-unset-key (kbd "C-/"))
