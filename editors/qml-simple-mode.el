@@ -41,16 +41,17 @@
                                       '("import" "using")
                                       "\\|")))
     (list
-     `("/\\*.*\\*/\\|//.*" (0 font-lock-comment-face t t))
-                                        ;     '("\\(\\(/\\*\\|^[ t]*\\)\\(.*\\n\\)*\\*/\\|//.*$\\)" 1 font-lock-comment-face)
-     
-     (cons (concat "^[ \t]*\\<" qml-directive-kwd "\\>[ \t]+") qml-preprocessor-face)
-     (list (concat "^[ \t]*\\(" qml-directive-kwd "\\)[ \t]+" "\\(\\(\\([a-zA-Z][a-zA-Z0-9]*\\)\\.?\\)+\\)[ \t]+" "\\(\\(\\([0-9]+\\)\\.?\\)+\\)[ \t]*;?$")
+     (list (concat "^[ \t]*\\(" qml-directive-kwd "\\)[ \t]+" 
+                   "\\(\\(\\([a-zA-Z][a-zA-Z0-9]*\\)\\.?\\)*\\([a-zA-Z][a-zA-Z0-9]*\\)\\)[ \t]+" 
+                   "\\(\\(\\([0-9]+\\)\\.?\\)*\\([0-9]+\\)\\)[ \t]*;?$")
+           '(1 qml-preprocessor-face nil t)
            '(2 qml-package-face nil t)
            '(5 qml-package-version-face nil t))
-     (list "^[ \t]*\\([a-zA-Z][a-zA-Z0-9]*\\)[ \t]*\\({\\|$\\)" 1 qml-specifier-face)
+     (list "\\(^\\|\\*/\\)[ \t]*\\([a-zA-Z][a-zA-Z0-9]*\\)[ \t]*\\({\\|$\\)" 2 qml-specifier-face)
      (list (concat "\\(^[ \t]*\\|;[ \t]*\\|{[ \t]*\\)" "\\(\\(\\([a-zA-Z][a-zA-Z0-9]*\\)\\.?\\)+\\)[ \t]*:") 
            '(2 font-lock-variable-name-face nil t))
+     '("/\\*.*\\*/\\|//.*" (0 font-lock-comment-face t t))
+                                        ;; keywords for multi-line block comment is later...
      ))
   "Highlighting expression for qml-simple-mode.")
 
