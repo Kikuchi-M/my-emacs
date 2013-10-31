@@ -10,6 +10,7 @@
 
 ;; ----- frames, windows -----
 (tool-bar-mode 0)
+(menu-bar-mode 0)
 (setq default-frame-alist
       (append '((top . 0)
                 (width . 120)
@@ -27,24 +28,22 @@
 
 ;; ----- display -----
 (setq-default truncate-lines t)
+(defun truncate-lines-off () (setq truncate-lines nil))
+
 (setq-default column-number-mode t)
-(dolist (linum-hook  (list
-                      'emacs-lisp-mode-hook
-                      'fundamental-mode-hook
-                      'c-mode-hook
-                      'c++-mode-hook
-                      'qml-simple-mode-hook
-                      ))
-  (add-hook linum-hook (lambda () (linum-mode t))))
-(add-hook 'find-file-hook (lambda () (linum-mode t)))
+
+(setq-default linum-mode t)
+(defun linum-mode-off () (linum-mode 0))
 
 ;; ----- shell, interpreter -----
-(defun truncate-lines-nil () 
-  (lambda () (setq truncate-lines nil)))
+(dolist (hooks (list
+                'comint-output-filter-functions
+                'ielm-mode-hook
+                'eshell-mode-hook))
+  (add-hook hooks (lambda (&optional opt)
+                    (truncate-lines-off)
+                    (linum-mode-off))))
 
-(add-hook 'shell-mode-hook (truncate-lines-nil))
-(add-hook 'ielm-mode-hook (truncate-lines-nil))
-(add-hook 'eshell-mode-hook (truncate-lines-nil))
 (global-set-key (kbd "C-/ C-i") 'ielm)
 
 ;; ----- file coding system -----
@@ -68,8 +67,8 @@
 (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
 
-(require 'qml-simple-mode)
-;(add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-simple-mode))
+(autoload 'qml-simple-mode "qml-simple-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-simple-mode))
 
 ;; ----- tab, indent -----
 (setq-default indent-tabs-mode nil)
