@@ -84,6 +84,29 @@
 (add-to-list 'load-path (concat emacs-add-dir "/direx-el"))
 (require 'direx)
 
+(defun in-git-repository-p ()
+  (string=
+   (replace-regexp-in-string
+    "[\n\r]+$" "" 
+    (shell-command-to-string "git rev-parse --is-inside-work-tree"))
+   "true"))
+
+(defun git-repository-root ()
+  (if (in-git-repository-p)
+      (replace-regexp-in-string
+       "[\n\r]+$" "" 
+       (shell-command-to-string "git rev-parse --show-toplevel"))
+    nil))
+
+(defun direx:jump-to-git-repository ()
+  (interactive)
+  (let ((git-repo (git-repository-root)))
+    (if git-repo (direx:find-directory git-repo)
+      (display-message-or-buffer "Couldn't find git repository."))))
+
+(global-set-key (kbd "C-/ j g") 'direx:jump-to-git-repository)
+(global-set-key (kbd "C-/ j d") 'direx:find-directory)
+
 (add-to-list 'load-path (concat emacs-add-dir "/magit"))
 (require 'magit)
 
