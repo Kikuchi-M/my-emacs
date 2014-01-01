@@ -107,6 +107,7 @@
 (global-set-key (kbd "C-/ j g") 'direx:jump-to-git-repository)
 (global-set-key (kbd "C-/ j d") 'direx:find-directory)
 
+(add-to-list 'load-path (concat emacs-add-dir "/git-modes"))
 (add-to-list 'load-path (concat emacs-add-dir "/magit"))
 (require 'magit)
 
@@ -183,8 +184,11 @@
 ;; ----- desktop -----
 (desktop-save-mode t)
 (global-set-key (kbd "C-/ C-d") 'desktop-change-dir)
-(add-hook 'desktop-after-read-hook (lambda () (setq search-ring nil)))
-
+(add-hook 'desktop-after-read-hook
+          (lambda ()
+            (setq search-ring nil)
+            (setq regexp-search-ring nil)
+            (setq file-name-history nil)))
 
 ;; ----- el utility -----
 (defun buffer-mode (buffer-or-string)
