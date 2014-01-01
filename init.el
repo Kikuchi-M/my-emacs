@@ -87,14 +87,14 @@
 (defun in-git-repository-p ()
   (string=
    (replace-regexp-in-string
-    "[\n\r]+$" "" 
+    "[\n\r]+$" ""
     (shell-command-to-string "git rev-parse --is-inside-work-tree"))
    "true"))
 
 (defun git-repository-root ()
   (if (in-git-repository-p)
       (replace-regexp-in-string
-       "[\n\r]+$" "" 
+       "[\n\r]+$" ""
        (shell-command-to-string "git rev-parse --show-toplevel"))
     nil))
 
@@ -157,6 +157,16 @@
 (global-set-key (kbd "C-; C-q") 'query-replace)
 (global-set-key (kbd "C-; C-x") 'query-replace-regexp)
 
+(defun delete-forward-whitespace ()
+  (interactive)
+  (let ((n 0))
+    (loop while (string-match "[ \t]" (string (char-after (point))))
+          do (progn (setq n (+ n 1)) (forward-char)))
+    (delete-char (- n))))
+
+(global-set-key (kbd "C-; d") 'delete-forward-whitespace)
+(global-set-key (kbd "C-; C-d") 'delete-forward-whitespace)
+
 (defun replace-regexp-all (regexp to-string)
   (let ((l (line-number-at-pos)))
     (goto-char 0)
@@ -166,9 +176,7 @@
 ;; Remove spaces in back of each line.
 (global-set-key
  (kbd "C-; C-<SPC>")
- (lambda (&optional opt)
-   (interactive)
-   (replace-regexp-all " +$" "")))
+ 'delete-trailing-whitespace)
 
 ;; Remove spaces which are input automatically
 ;; in front of parentheses by paredit.
@@ -188,7 +196,9 @@
           (lambda ()
             (setq search-ring nil)
             (setq regexp-search-ring nil)
-            (setq file-name-history nil)))
+            (setq file-name-history nil)
+            (require 'private-utility)
+            ))
 
 ;; ----- el utility -----
 (defun buffer-mode (buffer-or-string)
@@ -207,3 +217,6 @@
 
 (global-set-key (kbd "C-; C-e") 'eval-sexp-forwardn)
 (global-set-key (kbd "C-; e") 'eval-sexp-forwardn)
+
+;; ----- private utility -----
+(add-to-list 'load-path "~/emacs-add/private")
