@@ -53,7 +53,8 @@
                 'comint-output-filter-functions
                 'ielm-mode-hook
                 'eshell-mode-hook
-                'messages-buffer-mode-hook))
+                'messages-buffer-mode-hook
+                'help-mode-hook))
   (add-hook hooks (lambda (&optional opt)
                     (truncate-lines-off))))
 
