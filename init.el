@@ -168,15 +168,12 @@
 (global-set-key (kbd "C-; C-d") 'delete-forward-whitespace)
 
 (defun replace-regexp-all (regexp to-string)
-  (let ((l (line-number-at-pos)))
+  (save-excursion
     (goto-char 0)
-    (replace-regexp regexp to-string)
-    (goto-line l)))
+    (replace-regexp regexp to-string)))
 
 ;; Remove spaces in back of each line.
-(global-set-key
- (kbd "C-; C-<SPC>")
- 'delete-trailing-whitespace)
+(global-set-key (kbd "C-; C-<SPC>") 'delete-trailing-whitespace)
 
 ;; Remove spaces which are input automatically
 ;; in front of parentheses by paredit.
