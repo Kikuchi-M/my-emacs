@@ -149,6 +149,7 @@
 
 ;; tab, indent
 (setq-default indent-tabs-mode nil)
+(setq-default indent-line-function 'tab-to-tab-stop)
 (setq-default tab-width 4)
 
 ;; key bindings
