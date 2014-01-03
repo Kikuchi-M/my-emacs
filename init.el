@@ -78,6 +78,9 @@
                 (split-window-horizontally)
                 (balance-windows-area))))))
 
+(global-set-key (kbd "S-<up>") 'scroll-down-line)
+(global-set-key (kbd "S-<down>") 'scroll-up-line)
+
 ;; ----- interpreter -----
 (global-set-key (kbd "C-/ C-i") 'ielm)
 
@@ -143,6 +146,7 @@
                  'c++-mode-hook))
   (add-hook hooks 'enable-paredit-mode))
 
+;; qml-simple-mode
 (add-to-list 'load-path (concat emacs-add-dir "/qml-simple-mode"))
 (autoload 'qml-simple-mode "qml-simple-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-simple-mode))
@@ -187,6 +191,10 @@
      (if (or (eq m 'qml-simple-mode) (c-major-mode-is m))
          (replace-regexp-all "\\([^=]\\) +\\((\\)" "\\1\\2")
        (display-message-or-buffer "The buffer mode is not compatible.")))))
+
+;; highlighting
+(global-set-key (kbd "C-x w h") 'highlight-regexp)
+(global-set-key (kbd "C-x w r") 'unhighlight-regexp)
 
 ;; ----- desktop -----
 (desktop-save-mode t)
