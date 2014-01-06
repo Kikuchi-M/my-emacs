@@ -10,6 +10,8 @@
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/"))
+(package-initialize)
+(require 'cl)
 
 (when (eq system-type 'gnu/linux)
   (add-to-list 'load-path "/usr/share/emacs/site-lisp/emacs-mozc")
@@ -38,6 +40,25 @@
 (global-set-key (kbd "M-C-<right>") 'enlarge-window-horizontally)
 (global-set-key (kbd "M-C-<down>") 'shrink-window)
 (global-set-key (kbd "M-C-<up>") 'enlarge-window)
+
+(global-set-key
+ (kbd "C-x C-3")
+ (lambda (&optional n)
+   (interactive "P")
+   (let ((n1 (if (null n) 2 (- n 1))))
+     (loop repeat n1
+           do (progn
+                (split-window-horizontally)
+                (balance-windows-area))))))
+
+(global-set-key (kbd "S-<up>") 'scroll-down-line)
+(global-set-key (kbd "S-<down>") 'scroll-up-line)
+
+(global-set-key
+ (kbd "C-x w d")
+ (lambda (&optional opt)
+   (interactive "P")
+   (set-window-dedicated-p (get-buffer-window) (if opt t nil))))
 
 ;; ----- display, faces -----
 (setq-default truncate-lines t)
@@ -68,88 +89,87 @@
 
 (set-face-attribute 'region nil :background "SteelBlue1")
 
-(global-set-key
- (kbd "C-x C-3")
- (lambda (&optional n)
-   (interactive "P")
-   (let ((n1 (if (null n) 2 (- n 1))))
-     (loop repeat n1
-           do (progn
-                (split-window-horizontally)
-                (balance-windows-area))))))
-
-(global-set-key (kbd "S-<up>") 'scroll-down-line)
-(global-set-key (kbd "S-<down>") 'scroll-up-line)
-
 ;; ----- interpreter -----
 (global-set-key (kbd "C-/ C-i") 'ielm)
 
 ;; ----- project, directories -----
+;; direx original - https://github.com/m2ym/direx-el
+;;(unless (package-installed-p 'direx)
+;;  (package-install 'direx))
 (add-to-list 'load-path (concat emacs-add-dir "/direx-el"))
-(require 'direx)
+(when (require 'direx nil t)
+  (defun in-git-repository-p ()
+    (string=
+     (replace-regexp-in-string
+      "[\n\r]+$" ""
+      (shell-command-to-string "git rev-parse --is-inside-work-tree"))
+     "true"))
 
-(defun in-git-repository-p ()
-  (string=
-   (replace-regexp-in-string
-    "[\n\r]+$" ""
-    (shell-command-to-string "git rev-parse --is-inside-work-tree"))
-   "true"))
+  (defun git-repository-root ()
+    (if (in-git-repository-p)
+        (replace-regexp-in-string
+         "[\n\r]+$" ""
+         (shell-command-to-string "git rev-parse --show-toplevel"))
+      nil))
 
-(defun git-repository-root ()
-  (if (in-git-repository-p)
-      (replace-regexp-in-string
-       "[\n\r]+$" ""
-       (shell-command-to-string "git rev-parse --show-toplevel"))
-    nil))
+  (defun direx:jump-to-git-repository ()
+    (interactive)
+    (let ((git-repo (git-repository-root)))
+      (if (not git-repo)
+          (display-message-or-buffer "Couldn't find git repository.")
+        (direx:find-directory git-repo)
+        (set-window-dedicated-p (get-buffer-window) t))))
 
-(defun direx:jump-to-git-repository ()
-  (interactive)
-  (let ((git-repo (git-repository-root)))
-    (if git-repo (direx:find-directory git-repo)
-      (display-message-or-buffer "Couldn't find git repository."))))
+  (global-set-key (kbd "C-/ j g") 'direx:jump-to-git-repository)
+  (global-set-key (kbd "C-/ j d") 'direx:find-directory))
 
-(global-set-key (kbd "C-/ j g") 'direx:jump-to-git-repository)
-(global-set-key (kbd "C-/ j d") 'direx:find-directory)
-
+;; magit - https://github.com/magit/magit
+;; depends on git-modes - https://github.com/magit/git-modes
 (add-to-list 'load-path (concat emacs-add-dir "/git-modes"))
 (add-to-list 'load-path (concat emacs-add-dir "/magit"))
 (require 'magit)
+;;(unless (package-installed-p 'magit)
+;;  (package-install 'magit))
 
 ;; ----- edit mode, editing support -----
-;;  https://code.google.com/p/google-styleguide/
+;; google-c-style - https://code.google.com/p/google-styleguide/
 (add-to-list 'load-path (concat emacs-add-dir "/google-style-el"))
-(require 'google-c-style)
-(add-hook 'c-mode-common-hook
-          (lambda (&optional opt)
-            (google-set-c-style)))
+(when (require 'google-c-style nil t)
+  (add-hook 'c-mode-common-hook
+            (lambda (&optional opt)
+              (google-set-c-style))))
+;;(unless (package-installed-p 'google-c-style)
+;;  (package-install 'google-c-style))
 
 ;; auto-complete - https://github.com/auto-complete/auto-complete
 ;; auto-complete dependes on poup-el - https://github.com/auto-complete/popup-el
 (add-to-list 'load-path (concat emacs-add-dir "/popup-el"))
 (add-to-list 'load-path (concat emacs-add-dir "/auto-complete"))
-(require 'auto-complete)
-(global-auto-complete-mode 1)
+(when (require 'auto-complete nil t)
+  (global-auto-complete-mode 1))
+;;(unless (package-installed-p 'auto-complete)
+;;  (package-install 'auto-complete))
 
-;; paredit - http://mumble.net/~campbell/emacs/
+;; paredit - http://mumble.net/~campbell/git/paredit.git/
+;;         - https://github.com/goncha/paredit
 (add-to-list 'load-path (concat emacs-add-dir "/paredit"))
+(when (require 'paredit nil t)
+  ;; unbinded keys M-<down>, M-<up>, C-M-<down>, C-M-<up>, C-M-f, C-M-b
+  (dolist (hooks (list
+                  'emacs-lisp-mode-hook
+                  'eval-expression-minibuffer-setup-hook
+                  'ielm-mode-hook
+                  'lisp-mode-hook
+                  'lisp-interaction-mode-hook
+                  'scheme-mode-hook
+                  'c-mode-hook
+                  'c++-mode-hook))
+    (add-hook hooks 'enable-paredit-mode)))
 
-(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-;; unbinded keys M-<down>, M-<up>, C-M-f, C-M-b
-(dolist (hooks (list
-                 'emacs-lisp-mode-hook
-                 'eval-expression-minibuffer-setup-hook
-                 'ielm-mode-hook
-                 'lisp-mode-hook
-                 'lisp-interaction-mode-hook
-                 'scheme-mode-hook
-                 'c-mode-hook
-                 'c++-mode-hook))
-  (add-hook hooks 'enable-paredit-mode))
-
-;; qml-simple-mode
+;; qml-simple-mode - 
 (add-to-list 'load-path (concat emacs-add-dir "/qml-simple-mode"))
-(autoload 'qml-simple-mode "qml-simple-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-simple-mode))
+(when (require 'qml-simple-mode nil t)
+  (add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-simple-mode)))
 
 ;; tab, indent
 (setq-default indent-tabs-mode nil)
@@ -163,23 +183,17 @@
 (global-set-key (kbd "C-; C-q") 'query-replace)
 (global-set-key (kbd "C-; C-x") 'query-replace-regexp)
 
-(defun delete-forward-whitespace ()
-  (interactive)
-  (let ((n 0))
-    (loop while (string-match "[ \t]" (string (char-after (point))))
-          do (progn (setq n (+ n 1)) (forward-char)))
-    (delete-char (- n))))
+(require 'cc-mode)
+(global-set-key (kbd "C-; d") 'c-hungry-delete-forward)
+(global-set-key (kbd "C-; C-d") 'c-hungry-delete-forward)
 
-(global-set-key (kbd "C-; d") 'delete-forward-whitespace)
-(global-set-key (kbd "C-; C-d") 'delete-forward-whitespace)
+;; Remove spaces in back of each line.
+(global-set-key (kbd "C-; C-<SPC>") 'delete-trailing-whitespace)
 
 (defun replace-regexp-all (regexp to-string)
   (save-excursion
     (goto-char 0)
     (replace-regexp regexp to-string)))
-
-;; Remove spaces in back of each line.
-(global-set-key (kbd "C-; C-<SPC>") 'delete-trailing-whitespace)
 
 ;; Remove spaces which are input automatically
 ;; in front of parentheses by paredit.
@@ -189,7 +203,7 @@
    (interactive)
    (let* ((m (buffer-mode (current-buffer))))
      (if (or (eq m 'qml-simple-mode) (c-major-mode-is m))
-         (replace-regexp-all "\\([^=]\\) +\\((\\)" "\\1\\2")
+         (replace-regexp-all "([^=]) +(\[|\() *([^ ]?.*[^ ]?)" "\\1\\2\\3")
        (display-message-or-buffer "The buffer mode is not compatible.")))))
 
 ;; highlighting
