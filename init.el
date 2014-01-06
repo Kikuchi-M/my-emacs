@@ -15,8 +15,9 @@
 
 (when (eq system-type 'gnu/linux)
   (add-to-list 'load-path "/usr/share/emacs/site-lisp/emacs-mozc")
-  (require 'mozc)
-  (setq default-input-method "japanese-mozc"))
+  (if (not (require 'mozc))
+      (display-message-or-buffer "!! Unable to load mozc.")
+    (setq default-input-method "japanese-mozc")))
 
 ;; ----- unbinded keys -----
 (global-unset-key (kbd "C-/"))
@@ -97,7 +98,8 @@
 ;;(unless (package-installed-p 'direx)
 ;;  (package-install 'direx))
 (add-to-list 'load-path (concat emacs-add-dir "/direx-el"))
-(when (require 'direx nil t)
+(if (not (require 'direx nil t))
+    (display-message-or-buffer "!! Unable to load direx.")
   (defun in-git-repository-p ()
     (string=
      (replace-regexp-in-string
@@ -127,14 +129,16 @@
 ;; depends on git-modes - https://github.com/magit/git-modes
 (add-to-list 'load-path (concat emacs-add-dir "/git-modes"))
 (add-to-list 'load-path (concat emacs-add-dir "/magit"))
-(require 'magit)
+(if (not (require 'magit))
+    (display-message-or-buffer "!! Unable to load magit."))
 ;;(unless (package-installed-p 'magit)
 ;;  (package-install 'magit))
 
 ;; ----- edit mode, editing support -----
 ;; google-c-style - https://code.google.com/p/google-styleguide/
 (add-to-list 'load-path (concat emacs-add-dir "/google-style-el"))
-(when (require 'google-c-style nil t)
+(if (not (require 'google-c-style nil t))
+    (display-message-or-buffer "!! Unable to load google-c-style.")
   (add-hook 'c-mode-common-hook
             (lambda (&optional opt)
               (google-set-c-style))))
@@ -145,7 +149,8 @@
 ;; auto-complete dependes on poup-el - https://github.com/auto-complete/popup-el
 (add-to-list 'load-path (concat emacs-add-dir "/popup-el"))
 (add-to-list 'load-path (concat emacs-add-dir "/auto-complete"))
-(when (require 'auto-complete nil t)
+(if (not (require 'auto-complete nil t))
+    (display-message-or-buffer "!! Unable to load auto-complete.")
   (global-auto-complete-mode 1))
 ;;(unless (package-installed-p 'auto-complete)
 ;;  (package-install 'auto-complete))
@@ -153,7 +158,8 @@
 ;; paredit - http://mumble.net/~campbell/git/paredit.git/
 ;;         - https://github.com/goncha/paredit
 (add-to-list 'load-path (concat emacs-add-dir "/paredit"))
-(when (require 'paredit nil t)
+(if (not (require 'paredit nil t))
+    (display-message-or-buffer "!! Unable to load paredit.")
   ;; unbinded keys M-<down>, M-<up>, C-M-<down>, C-M-<up>, C-M-f, C-M-b
   (dolist (hooks (list
                   'emacs-lisp-mode-hook
@@ -166,9 +172,10 @@
                   'c++-mode-hook))
     (add-hook hooks 'enable-paredit-mode)))
 
-;; qml-simple-mode - 
+;; qml-simple-mode -
 (add-to-list 'load-path (concat emacs-add-dir "/qml-simple-mode"))
-(when (require 'qml-simple-mode nil t)
+(if (not (require 'qml-simple-mode nil t))
+    (display-message-or-buffer "!! Unable to load qml-mode.")
   (add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-simple-mode)))
 
 ;; tab, indent
