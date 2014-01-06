@@ -1,0 +1,15 @@
+[submodule "magit"]
+	path = magit
+	url = git@github.com:magit/magit.git
+[submodule "git-modes"]
+	path = git-modes
+	url = git@github.com:magit/git-modes.git
+[submodule "direx-el"]
+	path = direx-el
+	url = git@github.com:Kikuchi-M/direx-el.git
+[submodule "auto-complete"]
+	path = auto-complete
+	url = git@github.com:auto-complete/auto-complete.git
+[submodule "popup-el"]
+	path = popup-el
+	url = git@github.com:auto-complete/popup-el.git

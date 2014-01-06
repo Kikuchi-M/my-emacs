@@ -1,4 +1,8 @@
 *~
+*.#*
 *#*#
-*.desktop
-*.desktop.lock
+*.emacs.desktop
+*.emacs.desktop.lock
+google-c-style/*
+paredit/*
+private/*

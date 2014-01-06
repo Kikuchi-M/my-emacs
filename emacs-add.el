@@ -1,3 +1,17 @@
+;; emacs-lisp file for customizing emacs.
+;; 
+;; Usage :
+;;   call `load' function with path to this file
+;;
+;;      (load path/to/emacs-add.el)
+;;
+;;   in ~/.emacs or ~/.emacs.d/init.el, or run emacs with option
+;;
+;;     emacs -l path/to/emacs-add.el
+;;
+;; Some plugins are required from Github or other repositories.
+;; 
+
 (setq default-buffer-file-coding-system 'utf-8)
 
 (when (eq system-type 'windows-nt) (set-frame-font "Consolas"))
@@ -5,7 +19,17 @@
   (set-frame-font
    "-unknown-DejaVu Sans Mono-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1"))
 
-(defconst emacs-add-dir "~/emacs-add")
+(defconst emacs-add-dir
+  (let* ((emacs-add load-file-name))
+    (if emacs-add (file-name-directory emacs-add)
+      (error "Not found emacs-add directory. 
+Usage : 
+    (load path/to/emacs-add.el)
+in ~/.emacs or ~/.emacs.d/init.el, or 
+    emacs -l path/to/emacs-add.el
+by command. "))))
+
+(display-message-or-buffer emacs-add-dir)
 
 (require 'package)
 (add-to-list 'package-archives
@@ -97,7 +121,7 @@
 ;; direx original - https://github.com/m2ym/direx-el
 ;;(unless (package-installed-p 'direx)
 ;;  (package-install 'direx))
-(add-to-list 'load-path (concat emacs-add-dir "/direx-el"))
+(add-to-list 'load-path (concat emacs-add-dir "direx-el"))
 (if (not (require 'direx nil t))
     (display-message-or-buffer "!! Unable to load direx.")
   (defun in-git-repository-p ()
@@ -127,16 +151,16 @@
 
 ;; magit - https://github.com/magit/magit
 ;; depends on git-modes - https://github.com/magit/git-modes
-(add-to-list 'load-path (concat emacs-add-dir "/git-modes"))
-(add-to-list 'load-path (concat emacs-add-dir "/magit"))
-(if (not (require 'magit))
+(add-to-list 'load-path (concat emacs-add-dir "git-modes"))
+(add-to-list 'load-path (concat emacs-add-dir "magit"))
+(if (not (require 'magit nil t))
     (display-message-or-buffer "!! Unable to load magit."))
 ;;(unless (package-installed-p 'magit)
 ;;  (package-install 'magit))
 
 ;; ----- edit mode, editing support -----
 ;; google-c-style - https://code.google.com/p/google-styleguide/
-(add-to-list 'load-path (concat emacs-add-dir "/google-style-el"))
+(add-to-list 'load-path (concat emacs-add-dir "google-c-style"))
 (if (not (require 'google-c-style nil t))
     (display-message-or-buffer "!! Unable to load google-c-style.")
   (add-hook 'c-mode-common-hook
@@ -147,8 +171,8 @@
 
 ;; auto-complete - https://github.com/auto-complete/auto-complete
 ;; auto-complete dependes on poup-el - https://github.com/auto-complete/popup-el
-(add-to-list 'load-path (concat emacs-add-dir "/popup-el"))
-(add-to-list 'load-path (concat emacs-add-dir "/auto-complete"))
+(add-to-list 'load-path (concat emacs-add-dir "popup-el"))
+(add-to-list 'load-path (concat emacs-add-dir "auto-complete"))
 (if (not (require 'auto-complete nil t))
     (display-message-or-buffer "!! Unable to load auto-complete.")
   (global-auto-complete-mode 1))
@@ -157,7 +181,7 @@
 
 ;; paredit - http://mumble.net/~campbell/git/paredit.git/
 ;;         - https://github.com/goncha/paredit
-(add-to-list 'load-path (concat emacs-add-dir "/paredit"))
+(add-to-list 'load-path (concat emacs-add-dir "paredit"))
 (if (not (require 'paredit nil t))
     (display-message-or-buffer "!! Unable to load paredit.")
   ;; unbinded keys M-<down>, M-<up>, C-M-<down>, C-M-<up>, C-M-f, C-M-b
@@ -173,14 +197,14 @@
     (add-hook hooks 'enable-paredit-mode)))
 
 ;; qml-simple-mode -
-(add-to-list 'load-path (concat emacs-add-dir "/qml-simple-mode"))
+(add-to-list 'load-path (concat emacs-add-dir "qml-simple-mode"))
 (if (not (require 'qml-simple-mode nil t))
     (display-message-or-buffer "!! Unable to load qml-mode.")
   (add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-simple-mode)))
 
 ;; tab, indent
 (setq-default indent-tabs-mode nil)
-(setq-default indent-line-function 'tab-to-tab-stop)
+
 (setq-default tab-width 4)
 
 ;; key bindings
@@ -247,4 +271,5 @@
 (global-set-key (kbd "C-; e") 'eval-sexp-forwardn)
 
 ;; ----- private utility -----
-(add-to-list 'load-path "~/emacs-add/private")
+(add-to-list 'load-path (concat emacs-add-dir "private"))
+
