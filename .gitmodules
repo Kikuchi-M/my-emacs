@@ -13,3 +13,6 @@
 [submodule "popup-el"]
 	path = popup-el
 	url = git@github.com:auto-complete/popup-el.git
+[submodule "emacs.qml-mode"]
+	path = emacs.qml-mode
+	url = git@github.com:Kikuchi-M/emacs.qml-mode.git

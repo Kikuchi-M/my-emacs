@@ -196,7 +196,7 @@ by command. "))))
                   'c++-mode-hook))
     (add-hook hooks 'enable-paredit-mode)))
 
-;; qml-simple-mode -
+;; qml-simple-mode - https://github.com/Kikuchi-M/emacs.qml-mode
 (add-to-list 'load-path (concat emacs-add-dir "qml-simple-mode"))
 (if (not (require 'qml-simple-mode nil t))
     (display-message-or-buffer "!! Unable to load qml-mode.")
