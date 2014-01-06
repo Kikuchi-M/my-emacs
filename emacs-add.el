@@ -196,11 +196,11 @@ by command. "))))
                   'c++-mode-hook))
     (add-hook hooks 'enable-paredit-mode)))
 
-;; qml-simple-mode - https://github.com/Kikuchi-M/emacs.qml-mode
-(add-to-list 'load-path (concat emacs-add-dir "qml-simple-mode"))
-(if (not (require 'qml-simple-mode nil t))
+;; qml-simple-mode - https://github.com/Kikuchi-M/qml-mode
+(add-to-list 'load-path (concat emacs-add-dir "qml-mode"))
+(if (not (require 'qml-mode nil t))
     (display-message-or-buffer "!! Unable to load qml-mode.")
-  (add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-simple-mode)))
+  (add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-mode)))
 
 ;; tab, indent
 (setq-default indent-tabs-mode nil)

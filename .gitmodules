@@ -16,3 +16,6 @@
 [submodule "emacs.qml-mode"]
 	path = emacs.qml-mode
 	url = git@github.com:Kikuchi-M/emacs.qml-mode.git
+[submodule "qml-mode"]
+	path = qml-mode
+	url = git@github.com:Kikuchi-M/qml-mode.git
