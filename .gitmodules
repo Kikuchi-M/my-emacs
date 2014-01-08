@@ -12,7 +12,7 @@
 	url = https://github.com/auto-complete/auto-complete.git
 [submodule "popup-el"]
 	path = popup-el
-	url = git@github.com:auto-complete/popup-el.git
+	url = https://github.com/auto-complete/popup-el.git
 [submodule "qml-mode"]
 	path = qml-mode
 	url = https://github.com/Kikuchi-M/qml-mode.git
