@@ -81,11 +81,17 @@ by command. "))))
 (global-set-key (kbd "S-<up>") 'scroll-down-line)
 (global-set-key (kbd "S-<down>") 'scroll-up-line)
 
-(global-set-key
- (kbd "C-x w d")
- (lambda (&optional opt)
-   (interactive "P")
-   (set-window-dedicated-p (get-buffer-window) (if opt t nil))))
+(global-set-key (kbd "C-x w b") 'balance-windows-area)
+
+(defun toggle-window-dedicated ()
+  (interactive)
+  (message "%s dedicated: %s"
+           (buffer-name)
+           (set-window-dedicated-p
+            (get-buffer-window)
+            (not (window-dedicated-p)))))
+
+(global-set-key (kbd "C-x w d") 'toggle-window-dedicated)
 
 ;; ----- display, faces -----
 (setq-default truncate-lines t)
