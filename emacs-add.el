@@ -29,7 +29,7 @@ in ~/.emacs or ~/.emacs.d/init.el, or
     emacs -l path/to/emacs-add.el
 by command. "))))
 
-(display-message-or-buffer emacs-add-dir)
+(message "emacs-add: %s" emacs-add-dir)
 
 (require 'package)
 (add-to-list 'package-archives
@@ -40,7 +40,7 @@ by command. "))))
 (when (eq system-type 'gnu/linux)
   (add-to-list 'load-path "/usr/share/emacs/site-lisp/emacs-mozc")
   (if (not (require 'mozc))
-      (display-message-or-buffer "!! Unable to load mozc.")
+      (message "Unable to load mozc.")
     (setq default-input-method "japanese-mozc")))
 
 ;; ----- unbinded keys -----
@@ -123,7 +123,7 @@ by command. "))))
 ;;  (package-install 'direx))
 (add-to-list 'load-path (concat emacs-add-dir "direx-el"))
 (if (not (require 'direx nil t))
-    (display-message-or-buffer "!! Unable to load direx.")
+    (message "Unable to load direx.")
   (defun in-git-repository-p ()
     (string=
      (replace-regexp-in-string
@@ -142,7 +142,7 @@ by command. "))))
     (interactive)
     (let ((git-repo (git-repository-root)))
       (if (not git-repo)
-          (display-message-or-buffer "Couldn't find git repository.")
+          (message "Couldn't find git repository.")
         (direx:find-directory git-repo)
         (set-window-dedicated-p (get-buffer-window) t))))
 
@@ -154,7 +154,7 @@ by command. "))))
 (add-to-list 'load-path (concat emacs-add-dir "git-modes"))
 (add-to-list 'load-path (concat emacs-add-dir "magit"))
 (if (not (require 'magit nil t))
-    (display-message-or-buffer "!! Unable to load magit."))
+    (message "Unable to load magit."))
 ;;(unless (package-installed-p 'magit)
 ;;  (package-install 'magit))
 
@@ -162,7 +162,7 @@ by command. "))))
 ;; google-c-style - https://code.google.com/p/google-styleguide/
 (add-to-list 'load-path (concat emacs-add-dir "google-c-style"))
 (if (not (require 'google-c-style nil t))
-    (display-message-or-buffer "!! Unable to load google-c-style.")
+    (message "Unable to load google-c-style.")
   (add-hook 'c-mode-common-hook
             (lambda (&optional opt)
               (google-set-c-style))))
@@ -174,7 +174,7 @@ by command. "))))
 (add-to-list 'load-path (concat emacs-add-dir "popup-el"))
 (add-to-list 'load-path (concat emacs-add-dir "auto-complete"))
 (if (not (require 'auto-complete nil t))
-    (display-message-or-buffer "!! Unable to load auto-complete.")
+    (message "Unable to load auto-complete.")
   (global-auto-complete-mode 1))
 ;;(unless (package-installed-p 'auto-complete)
 ;;  (package-install 'auto-complete))
@@ -183,7 +183,7 @@ by command. "))))
 ;;         - https://github.com/goncha/paredit
 (add-to-list 'load-path (concat emacs-add-dir "paredit"))
 (if (not (require 'paredit nil t))
-    (display-message-or-buffer "!! Unable to load paredit.")
+    (message "Unable to load paredit.")
   ;; unbinded keys M-<down>, M-<up>, C-M-<down>, C-M-<up>, C-M-f, C-M-b
   (dolist (hooks (list
                   'emacs-lisp-mode-hook
@@ -199,7 +199,7 @@ by command. "))))
 ;; qml-simple-mode - https://github.com/Kikuchi-M/qml-mode
 (add-to-list 'load-path (concat emacs-add-dir "qml-mode"))
 (if (not (require 'qml-mode nil t))
-    (display-message-or-buffer "!! Unable to load qml-mode.")
+    (message "Unable to load qml-mode.")
   (add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-mode)))
 
 ;; tab, indent
@@ -235,7 +235,7 @@ by command. "))))
    (let* ((m (buffer-mode (current-buffer))))
      (if (or (eq m 'qml-simple-mode) (c-major-mode-is m))
          (replace-regexp-all "([^=]) +(\[|\() *([^ ]?.*[^ ]?)" "\\1\\2\\3")
-       (display-message-or-buffer "The buffer mode is not compatible.")))))
+       (message "The buffer mode is not compatible.")))))
 
 ;; highlighting
 (global-set-key (kbd "C-x w h") 'highlight-regexp)
@@ -250,7 +250,7 @@ by command. "))))
             (setq regexp-search-ring nil)
             (setq file-name-history nil)
             (unless (require 'private-desktop-util nil t)
-              (display-message-or-buffer "!! Unable to load private-desktop-util."))
+              (message "Unable to load private-desktop-util."))
             ))
 
 ;; ----- el utility -----
@@ -261,7 +261,7 @@ by command. "))))
 (defun eval-sexp-forwardn (&optional n)
   (interactive "P")
   (if (not (eq (buffer-mode (current-buffer)) 'emacs-lisp-mode))
-      (display-message-or-buffer "The buffer is not elisp.")
+      (message "The buffer is not elisp.")
     (let ((n1 (if (null n) 1 n)))
       (loop repeat n1
             do (let ((b (point))
@@ -274,4 +274,4 @@ by command. "))))
 ;; ----- private utility -----
 (add-to-list 'load-path (concat emacs-add-dir "private"))
 (unless (require 'private-init nil t)
-    (display-message-or-buffer "!! Unable to load private-init."))
+    (message "Unable to load private-init."))
