@@ -249,7 +249,7 @@ by command. "))))
             (setq search-ring nil)
             (setq regexp-search-ring nil)
             (setq file-name-history nil)
-            (unless (require 'privaet-desktop-util nil t)
+            (unless (require 'private-desktop-util nil t)
               (display-message-or-buffer "!! Unable to load private-desktop-util."))
             ))
 
