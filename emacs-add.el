@@ -46,6 +46,8 @@ by command. "))))
 ;; ----- unbinded keys -----
 (global-unset-key (kbd "C-/"))
 (global-unset-key (kbd "C-z"))
+(global-unset-key (kbd "C-x C-z"))
+(global-unset-key (kbd "ESC ESC ESC"))
 (setq inhibit-startup-message t)
 
 ;; ----- frames, windows -----
