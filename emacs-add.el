@@ -112,9 +112,15 @@ by command. "))))
                 'ielm-mode-hook
                 'eshell-mode-hook
                 'messages-buffer-mode-hook
-                'help-mode-hook))
+                'help-mode-hook
+                'completion-list-mode-hook))
   (add-hook hooks (lambda (&optional opt)
                     (truncate-lines-off))))
+
+(let ((mb (get-buffer "*Messages*")))
+  (when mb
+    (set-buffer mb)
+    (messages-buffer-mode)))
 
 ;; line number mode off
 (dolist (hooks (list
