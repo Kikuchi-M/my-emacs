@@ -94,6 +94,8 @@ by command. "))))
 (global-set-key (kbd "C-x w d") 'toggle-window-dedicated)
 
 ;; ----- display, faces -----
+(global-hl-line-mode t)
+
 (setq-default truncate-lines t)
 (defun truncate-lines-off () (setq truncate-lines nil))
 
