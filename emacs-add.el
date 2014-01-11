@@ -253,6 +253,14 @@ by command. "))))
          (replace-regexp-all "([^=]) +(\[|\() *([^ ]?.*[^ ]?)" "\\1\\2\\3")
        (message "The buffer mode is not compatible.")))))
 
+(defun downcase-char (&optional n)
+  (interactive "P")
+  (let* ((n1 (if (and n (numberp n)) n 1))
+         (b (point))
+         (e (+ b n1)))
+    (downcase-region b e)
+    (goto-char e)))
+
 ;; ----- desktop -----
 (desktop-save-mode t)
 (global-set-key (kbd "C-/ C-d") 'desktop-change-dir)
