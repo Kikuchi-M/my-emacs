@@ -76,9 +76,24 @@ by command. "))))
    (interactive "P")
    (let ((n1 (if (null n) 2 (- n 1))))
      (loop repeat n1
+           do (split-window-horizontally (- (window-width) 10)))
+     (balance-windows-area))))
+
+(global-set-key
+ (kbd "C-x M-3")
+ (lambda (&optional n)
+   (interactive "P")
+   (let* ((n1 (if (null n) 2 (- n 1)))
+          (h (/ (window-height) 2))
+          (w (/ (window-width) (+ n1 1))))
+     (message "num:%d, w:%d, h:%d" n1 w h)
+     (loop repeat n1
            do (progn
-                (split-window-horizontally)
-                (balance-windows-area))))))
+                (split-window-horizontally (- (window-width) w))
+                (windmove-right)
+                (split-window-vertically h)
+                (windmove-left)))
+     (split-window-vertically h))))
 
 (global-set-key (kbd "S-<up>") 'scroll-down-line)
 (global-set-key (kbd "S-<down>") 'scroll-up-line)
