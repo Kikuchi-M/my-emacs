@@ -217,7 +217,6 @@ by command. "))))
 
 ;; tab, indent
 (setq-default indent-tabs-mode nil)
-
 (setq-default tab-width 4)
 
 ;; key bindings
@@ -227,9 +226,11 @@ by command. "))))
 (global-set-key (kbd "C-; C-q") 'query-replace)
 (global-set-key (kbd "C-; C-x") 'query-replace-regexp)
 
-(require 'cc-mode)
+(require 'cc-cmds)
 (global-set-key (kbd "C-; d") 'c-hungry-delete-forward)
 (global-set-key (kbd "C-; C-d") 'c-hungry-delete-forward)
+(global-set-key (kbd "C-; b") 'c-hungry-delete-backwards)
+(global-set-key (kbd "C-; C-b") 'c-hungry-delete-backwards)
 
 ;; Remove spaces in back of each line.
 (global-set-key (kbd "C-; C-<SPC>") 'delete-trailing-whitespace)
