@@ -111,6 +111,8 @@ by command. "))))
 
 ;; ----- display, faces -----
 (global-hl-line-mode t)
+(global-set-key (kbd "C-x w h") 'highlight-regexp)
+(global-set-key (kbd "C-x w r") 'unhighlight-regexp)
 
 (setq-default truncate-lines t)
 (defun truncate-lines-off () (setq truncate-lines nil))
@@ -250,10 +252,6 @@ by command. "))))
      (if (or (eq m 'qml-simple-mode) (c-major-mode-is m))
          (replace-regexp-all "([^=]) +(\[|\() *([^ ]?.*[^ ]?)" "\\1\\2\\3")
        (message "The buffer mode is not compatible.")))))
-
-;; highlighting
-(global-set-key (kbd "C-x w h") 'highlight-regexp)
-(global-set-key (kbd "C-x w r") 'unhighlight-regexp)
 
 ;; ----- desktop -----
 (desktop-save-mode t)
