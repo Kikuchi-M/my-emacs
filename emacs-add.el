@@ -59,6 +59,8 @@ by command. "))))
                 (height . 57)
                 (background-color . "#F4F5F9"))))
 
+(set-face-attribute 'default nil :height 90)
+
 (global-set-key (kbd "M-<down>") 'windmove-down)
 (global-set-key (kbd "M-<up>") 'windmove-up)
 (global-set-key (kbd "M-<left>") 'windmove-left)
