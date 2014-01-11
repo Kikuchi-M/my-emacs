@@ -154,31 +154,9 @@ by command. "))))
 ;;(unless (package-installed-p 'direx)
 ;;  (package-install 'direx))
 (add-to-list 'load-path (concat emacs-add-dir "direx-el"))
-(if (not (require 'direx nil t))
-    (message "Unable to load direx.")
-  (defun in-git-repository-p ()
-    (string=
-     (replace-regexp-in-string
-      "[\n\r]+$" ""
-      (shell-command-to-string "git rev-parse --is-inside-work-tree"))
-     "true"))
-
-  (defun git-repository-root ()
-    (if (in-git-repository-p)
-        (replace-regexp-in-string
-         "[\n\r]+$" ""
-         (shell-command-to-string "git rev-parse --show-toplevel"))
-      nil))
-
-  (defun direx:jump-to-git-repository ()
-    (interactive)
-    (let ((git-repo (git-repository-root)))
-      (if (not git-repo)
-          (message "Couldn't find git repository.")
-        (direx:find-directory git-repo)
-        (set-window-dedicated-p (get-buffer-window) t))))
-
-  (global-set-key (kbd "C-/ j g") 'direx:jump-to-git-repository)
+(if (not (or (require 'direx nil t) (require 'direx-project nil t)))
+    (message "Unable to load direx, direx-project.")
+  (global-set-key (kbd "C-/ j g") 'direx-project:jump-to-project-root)
   (global-set-key (kbd "C-/ j d") 'direx:find-directory))
 
 ;; magit - https://github.com/magit/magit
