@@ -86,7 +86,6 @@ by command. "))))
    (let* ((n1 (if (null n) 2 (- n 1)))
           (h (/ (window-height) 2))
           (w (/ (window-width) (+ n1 1))))
-     (message "num:%d, w:%d, h:%d" n1 w h)
      (loop repeat n1
            do (progn
                 (split-window-horizontally (- (window-width) w))
