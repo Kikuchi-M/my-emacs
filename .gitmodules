@@ -16,3 +16,6 @@
 [submodule "qml-mode"]
 	path = qml-mode
 	url = https://github.com/Kikuchi-M/qml-mode.git
+[submodule "buffer-collect"]
+	path = buffer-collect
+	url = https://github.com/Kikuchi-M/buffer-collect.git
