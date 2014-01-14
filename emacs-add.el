@@ -158,6 +158,18 @@ by command. "))))
 (add-to-list 'load-path (concat emacs-add-dir "direx-el"))
 (if (not (and (require 'direx nil t) (require 'direx-project nil t)))
     (message "Unable to load direx, direx-project.")
+
+  (defun direx:find-item-noselect (&optional item)
+    (interactive)
+    (let* ((item (or item (direx:item-at-point))))
+      (if (direx:item-leaf-p item)
+          (find-file-noselect
+           (direx:file-full-name (direx:item-tree item))))))
+
+  (let ((map direx:direx-mode-map))
+    (define-key map (kbd "s") 'direx:find-item-noselect)
+    (setq direx:direx-mode-map map))
+
   (global-set-key (kbd "C-/ j g") 'direx-project:jump-to-project-root)
   (global-set-key (kbd "C-/ j d") 'direx:find-directory))
 
