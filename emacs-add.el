@@ -1,5 +1,5 @@
 ;; emacs-lisp file for customizing emacs.
-;; 
+;;
 ;; Usage :
 ;;   call `load' function with path to this file
 ;;
@@ -10,7 +10,7 @@
 ;;     emacs -l path/to/emacs-add.el
 ;;
 ;; Some plugins are required from Github or other repositories.
-;; 
+;;
 
 (setq default-buffer-file-coding-system 'utf-8)
 
@@ -22,10 +22,10 @@
 (defconst emacs-add-dir
   (let* ((emacs-add load-file-name))
     (if emacs-add (file-name-directory emacs-add)
-      (error "Not found emacs-add directory. 
-Usage : 
+      (error "Not found emacs-add directory.
+Usage :
     (load path/to/emacs-add.el)
-in ~/.emacs or ~/.emacs.d/init.el, or 
+in ~/.emacs or ~/.emacs.d/init.el, or
     emacs -l path/to/emacs-add.el
 by command. "))))
 
@@ -247,10 +247,12 @@ by command. "))))
 (global-set-key
  (kbd "C-; C-8")
  (lambda (&optional opt)
+   "Remove spaces inserted automatically by paredit.
+This can execute in major modes of c family or qml-mode."
    (interactive)
    (let* ((m (buffer-mode (current-buffer))))
-     (if (or (eq m 'qml-simple-mode) (c-major-mode-is m))
-         (replace-regexp-all "([^=]) +(\[|\() *([^ ]?.*[^ ]?)" "\\1\\2\\3")
+     (if (or (eq m 'qml-mode) (c-major-mode-is m))
+         (replace-regexp-all "\\([^=]\\) +\\(\\[\\|(\\) *\\([^ ]?.*[^ ]?\\)" "\\1\\2\\3")
        (message "The buffer mode is not compatible.")))))
 
 (defun downcase-char (&optional n)
