@@ -183,6 +183,17 @@ by command. "))))
 ;;(unless (package-installed-p 'magit)
 ;;  (package-install 'magit))
 
+;; ----- searching -----
+(add-to-list 'load-path (concat emacs-add-dir "buffer-collect"))
+(if (not (require 'buffer-collect nil t))
+    (message "Unable to load buffer-collect.")
+  (defun multi-occur-ex (&optional type-str regexp)
+    (interactive (list (bc:type-list-str-prompt)
+                       (read-regexp "Regexp: ")))
+    (if (or (not regexp) (string-equal regexp ""))
+        (error "Cannot execute with empty regexp.")
+      (multi-occur (bc:collect-buffers type-str) regexp))))
+
 ;; ----- edit mode, editing support -----
 ;; google-c-style - https://code.google.com/p/google-styleguide/
 (add-to-list 'load-path (concat emacs-add-dir "google-c-style"))
