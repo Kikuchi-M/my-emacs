@@ -275,7 +275,7 @@ This can execute in major modes of c family or qml-mode."
    (interactive)
    (let* ((m (buffer-mode (current-buffer))))
      (if (or (eq m 'qml-mode) (c-major-mode-is m))
-         (replace-regexp-all "\\([^=\\+-\\*/\\^|& ]\\) +\\(\\[\\|(\\) *\\([^ ]?.*[^ ]?\\)" "\\1\\2\\3")
+         (replace-regexp-all "\\([^=:&|^/*+-]\\) +\\(\\[\\|(\\) *\\([^ ]?.*[^ ]?\\)" "\\1\\2\\3")
        (message "The buffer mode is not compatible.")))))
 
 (defun downcase-char (&optional n)
