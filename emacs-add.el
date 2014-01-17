@@ -37,9 +37,10 @@ by command. "))))
 (package-initialize)
 (require 'cl)
 
+;; japanese input method
 (when (eq system-type 'gnu/linux)
   (add-to-list 'load-path "/usr/share/emacs/site-lisp/emacs-mozc")
-  (if (not (require 'mozc))
+  (if (not (require 'mozc nil t))
       (message "Unable to load mozc.")
     (setq default-input-method "japanese-mozc")))
 
@@ -265,8 +266,6 @@ by command. "))))
     (goto-char 0)
     (replace-regexp regexp to-string)))
 
-;; Remove spaces which are input automatically
-;; in front of parentheses by paredit.
 (global-set-key
  (kbd "C-; C-8")
  (lambda (&optional opt)
@@ -294,9 +293,9 @@ This can execute in major modes of c family or qml-mode."
             (setq search-ring nil)
             (setq regexp-search-ring nil)
             (setq file-name-history nil)
-            (unless (require 'private-desktop-util nil t)
-              (message "Unable to load private-desktop-util."))
-            ))
+            (if (not (and (require 'misc-desktop nil t) (functionp 'misc-init-desktop)))
+                (message "Unable to load misc-desktop.")
+              (misc-init-desktop))))
 
 ;; ----- el utility -----
 (defun buffer-mode (buffer-or-string)
@@ -317,6 +316,6 @@ This can execute in major modes of c family or qml-mode."
 (global-set-key (kbd "C-; e") 'eval-sexp-forwardn)
 
 ;; ----- private utility -----
-(add-to-list 'load-path (concat emacs-add-dir "private"))
-(unless (require 'private-init nil t)
-    (message "Unable to load private-init."))
+(add-to-list 'load-path (concat emacs-add-dir "emacs-private"))
+(unless (require 'misc nil t)
+    (message "Unable to load misc."))

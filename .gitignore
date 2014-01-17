@@ -5,4 +5,4 @@
 *.emacs.desktop.lock
 google-c-style/*
 paredit/*
-private/*
+emacs-private/*
