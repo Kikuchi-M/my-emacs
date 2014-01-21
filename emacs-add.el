@@ -112,8 +112,6 @@ by command. "))))
 
 ;; ----- display, faces -----
 (global-hl-line-mode t)
-(global-set-key (kbd "C-x w h") 'highlight-regexp)
-(global-set-key (kbd "C-x w r") 'unhighlight-regexp)
 
 (setq-default truncate-lines t)
 (defun truncate-lines-off () (setq truncate-lines nil))
@@ -185,6 +183,25 @@ by command. "))))
 ;;  (package-install 'magit))
 
 ;; ----- searching -----
+;; highlighting
+(global-set-key (kbd "C-x w h") 'highlight-regexp)
+(global-set-key (kbd "C-x w r") 'unhighlight-regexp)
+
+(defun exec-unhighlight-all ()
+  (mapcar (lambda (p)
+            (unhighlight-regexp (car p)))
+          hi-lock-interactive-patterns))
+
+(defun unhighlight-all (&optional force)
+  (interactive "P")
+  (message "%s" force)
+  (if (not hi-lock-interactive-patterns)
+      (message "No highlighting to remove.")
+    (if (or force (y-or-n-p "Unhighlight all patterns."))
+        (exec-unhighlight-all))))
+
+(global-set-key (kbd "C-x w u") 'unhighlight-all)
+
 (add-to-list 'load-path (concat emacs-add-dir "buffer-collect"))
 (if (not (require 'buffer-collect nil t))
     (message "Unable to load buffer-collect.")
