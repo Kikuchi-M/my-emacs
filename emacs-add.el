@@ -202,6 +202,7 @@ by command. "))))
 
 (global-set-key (kbd "C-x w u") 'unhighlight-all)
 
+;; multi buffer
 (add-to-list 'load-path (concat emacs-add-dir "buffer-collect"))
 (if (not (require 'buffer-collect nil t))
     (message "Unable to load buffer-collect.")
@@ -210,7 +211,9 @@ by command. "))))
                        (read-regexp "Regexp: ")))
     (if (or (not regexp) (string-equal regexp ""))
         (error "Cannot execute with empty regexp.")
-      (multi-occur (bc:collect-buffers type-str) regexp))))
+      (multi-occur (bc:collect-buffers type-str) regexp)))
+
+  (global-set-key (kbd "C-x <f3>") 'multi-occur-ex))
 
 ;; ----- edit mode, editing support -----
 ;; google-c-style - https://code.google.com/p/google-styleguide/
