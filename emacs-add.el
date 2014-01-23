@@ -245,7 +245,6 @@ by command. "))))
   (dolist (hooks (list
                   'emacs-lisp-mode-hook
                   'eval-expression-minibuffer-setup-hook
-                  'sh-mode-hook
                   'ielm-mode-hook
                   'lisp-mode-hook
                   'lisp-interaction-mode-hook
