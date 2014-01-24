@@ -264,6 +264,11 @@ by command. "))))
 ;; tab, indent
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
+(global-set-key
+ (kbd "C-<tab>")
+ (lambda ()
+   (interactive)
+   (indent-region (point-min) (point-max))))
 
 ;; key bindings
 (global-set-key (kbd "C-z") 'undo)
@@ -365,4 +370,4 @@ This can execute in major modes of c family or qml-mode."
 ;; ----- private utility -----
 (add-to-list 'load-path (concat emacs-add-dir "emacs-private"))
 (unless (require 'misc nil t)
-    (message "Unable to load misc."))
+  (message "Unable to load misc."))
