@@ -286,6 +286,31 @@ by command. "))))
     (goto-char 0)
     (replace-regexp regexp to-string)))
 
+(defun back-to-bol-or-nonspace (&optional n)
+  (let ((n1 (if (not (numberp n)) 1 n)))
+    (when (> n1 0)
+      (search-backward-regexp "^\\|[^[:space:]]")
+      (back-to-bol-or-nonspace (- n1 1)))))
+
+(defun remove-auto-inserted-spaces (cont)
+  (when cont
+    (let* ((bop (let ((hit (search-forward-regexp " [[\\(]" nil t)))
+                  (when hit (backward-char) (point))))
+           (word (if (or (not bop)
+                         (string-match
+                          "[\\.=;:&|^/*+-]"
+                          (char-to-string (save-excursion (char-after (back-to-bol-or-nonspace)))))
+                         (string-match
+                          "^[ \t]+$"
+                          (let ((bol-to-bop (buffer-substring (point-at-bol) bop)))
+                            bol-to-bop)))
+                     nil
+                   (message "getting previous word")
+                   (save-excursion (backward-word) (word-at-point)))))
+      (when (and word (not (string-match "\\(return\\|void\\)" word)))
+        (c-hungry-delete-backwards))
+      (remove-auto-inserted-spaces bop))))
+
 (global-set-key
  (kbd "C-; C-8")
  (lambda (&optional opt)
@@ -294,7 +319,9 @@ This can execute in major modes of c family or qml-mode."
    (interactive)
    (let* ((m (buffer-mode (current-buffer))))
      (if (or (eq m 'qml-mode) (c-major-mode-is m))
-         (replace-regexp-all "\\([^=:&|^/*+-]\\) +\\(\\[\\|(\\) *\\([^ ]?.*[^ ]?\\)" "\\1\\2\\3")
+         (save-excursion
+           (goto-char (point-min))
+           (remove-auto-inserted-spaces t))
        (message "The buffer mode is not compatible.")))))
 
 (defun downcase-char (&optional n)
