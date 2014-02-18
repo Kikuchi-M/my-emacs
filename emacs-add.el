@@ -249,11 +249,12 @@ by command. "))))
                   'lisp-mode-hook
                   'lisp-interaction-mode-hook
                   'scheme-mode-hook
+                  'javascript-mode-hook
                   'c-mode-hook
                   'c++-mode-hook))
     (add-hook hooks 'enable-paredit-mode)))
 
-;; qml-simple-mode - https://github.com/Kikuchi-M/qml-mode
+;; qml-mode - https://github.com/Kikuchi-M/qml-mode
 (add-to-list 'load-path (concat emacs-add-dir "qml-mode"))
 (if (not (require 'qml-mode nil t))
     (message "Unable to load qml-mode.")
@@ -276,6 +277,9 @@ by command. "))))
 (global-set-key (kbd "C-; C-r") 'replace-regexp)
 (global-set-key (kbd "C-; C-q") 'query-replace)
 (global-set-key (kbd "C-; C-x") 'query-replace-regexp)
+
+(global-set-key (kbd "C-; c") 'comment-region)
+(global-set-key (kbd "C-; u") 'uncomment-region)
 
 (require 'cc-cmds)
 (global-set-key (kbd "C-; d") 'c-hungry-delete-forward)
