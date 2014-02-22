@@ -341,6 +341,51 @@ This can execute in major modes of c family or qml-mode."
     (downcase-region b e)
     (goto-char e)))
 
+;; c++ mode
+(if (not (and (require 'cc-mode nil t)
+              (require 'find-file nil t)
+              c++-mode-map
+              cc-other-file-alist))
+    (message "Unable to load cc-mode.")
+
+  (dolist (types (list
+                  '("\\.h\\'" . c++-mode)
+                  '("\\.ipp\\'" . c++-mode)
+                  '("\\.tcc\\'" . c++-mode)))
+    (add-to-list 'auto-mode-alist types))
+
+  (let* ((cpp-map c++-mode-map))
+    (define-key cpp-map (kbd "<f6>") 'ff-find-other-file)
+    (setq c++-mode-map cpp-map))
+
+  (defun add-cc-other-assoc (key others)
+    (if (not (and key others
+                  (or (stringp others)
+                      (reduce (lambda (f e) (and f (stringp e)))
+                              others
+                              :initial-value t))))
+        (message "Could not add association to cc-other-file-alist. %s %s"
+                 key others)
+      (let* ((assoc (assoc key cc-other-file-alist))
+             (new-alist (remove assoc cc-other-file-alist))
+             (to-add (if (stringp others) (list others) others))
+             )
+        (setq cc-other-file-alist
+              (cons (list key
+                          (if assoc
+                              (reduce (lambda (l e)
+                                        (if (member e l) l
+                                          (append l (list e))))
+                                      to-add
+                                      :initial-value (cadr assoc))
+                            to-add))
+                    new-alist)))))
+
+  (add-cc-other-assoc "\\.h\\'" (list ".ipp" ".tcc"))
+  (add-cc-other-assoc "\\.ipp\\'" (list ".h" ".cpp"))
+  (add-cc-other-assoc "\\.tcc\\'" (list ".h" ".cpp"))
+  )
+
 ;; ----- desktop -----
 (desktop-save-mode t)
 (global-set-key (kbd "C-/ C-d") 'desktop-change-dir)
