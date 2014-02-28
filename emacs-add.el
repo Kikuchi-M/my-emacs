@@ -12,7 +12,8 @@
 ;; Some plugins are required from Github or other repositories.
 ;;
 
-(setq default-buffer-file-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8-unix)
+(prefer-coding-system 'utf-8)
 
 (when (eq system-type 'windows-nt) (set-frame-font "Consolas"))
 (when (eq system-type 'gnu/linux)
