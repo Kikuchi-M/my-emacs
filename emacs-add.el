@@ -313,8 +313,11 @@ by command. "))))
 
 (defun remove-auto-inserted-spaces (cont)
   (when cont
-    (let* ((bop (let ((hit (search-forward-regexp " [[\\(]" nil t)))
-                  (when hit (backward-char) (point))))
+    (let* ((hit (search-forward-regexp " [[\\(]" nil t))
+           (bop (when (and hit
+                           (let ((parse (parse-partial-sexp (point-at-bol) hit)))
+                             (and (not (nth 3 parse)) (not (nth 4 parse)))))
+                  (backward-char) (point)))
            (word (if (or (not bop)
                          (string-match
                           "[\\.=;:&|^/*+-]"
@@ -326,9 +329,9 @@ by command. "))))
                      nil
                    (message "getting previous word")
                    (save-excursion (backward-word) (word-at-point)))))
-      (when (and word (not (string-match "\\(return\\|void\\)" word)))
+      (when (and word (not (string-match "\\(return\\|void\\|if\\|switch\\|when\\|for\\)" word)))
         (c-hungry-delete-backwards))
-      (remove-auto-inserted-spaces bop))))
+      (remove-auto-inserted-spaces hit))))
 
 (global-set-key
  (kbd "C-; C-8")
@@ -337,7 +340,7 @@ by command. "))))
 This can execute in major modes of c family or qml-mode."
    (interactive)
    (let* ((m (buffer-mode (current-buffer))))
-     (if (or (eq m 'qml-mode) (c-major-mode-is m))
+     (if (or (eq m 'qml-mode) (c-major-mode-is m) (eq m 'js-mode))
          (save-excursion
            (goto-char (point-min))
            (remove-auto-inserted-spaces t))
