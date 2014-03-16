@@ -160,15 +160,23 @@ by command. "))))
 (if (not (and (require 'direx nil t) (require 'direx-project nil t)))
     (message "Unable to load direx, direx-project.")
 
-  (defun direx:find-item-noselect (&optional item)
+  (defun direx:find-item-noselect (&optional item readonly)
     (interactive)
     (let* ((item (or item (direx:item-at-point))))
       (if (direx:item-leaf-p item)
-          (find-file-noselect
-           (direx:file-full-name (direx:item-tree item))))))
+          (let ((buf (find-file-noselect
+                      (direx:file-full-name (direx:item-tree item)))))
+            (when readonly
+              (set-buffer buf)
+              (read-only-mode t))))))
+
+  (defun direx:find-item-noselect-readonly (&optional item)
+    (interactive)
+    (direx:find-item-noselect item t))
 
   (let ((map direx:direx-mode-map))
-    (define-key map (kbd "s") 'direx:find-item-noselect)
+    (define-key map (kbd "s f") 'direx:find-item-noselect)
+    (define-key map (kbd "s r") 'direx:find-item-noselect-readonly)
     (setq direx:direx-mode-map map))
 
   (global-set-key (kbd "C-/ j g") 'direx-project:jump-to-project-root)
