@@ -268,8 +268,15 @@ by command. "))))
                   'c-mode-hook
                   'c++-mode-hook
                   'csharp-mode-hook
+                  'python-mode-hook
                   ))
     (add-hook hooks 'enable-paredit-mode)))
+
+;; python-mode
+(add-hook 'python-mode-hook
+          (lambda ()
+            (setq python-indent-offset 2))
+          )
 
 ;; qml-mode - https://github.com/Kikuchi-M/qml-mode
 (add-to-list 'load-path (concat emacs-add-dir "qml-mode"))
@@ -350,7 +357,8 @@ This can execute in major modes of c family or qml-mode."
      (if (or (eq m 'qml-mode)
              (c-major-mode-is m)
              (eq m 'js-mode)
-             (eq m 'csharp-mode))
+             (eq m 'csharp-mode)
+             (eq m 'python-mode))
          (save-excursion
            (goto-char (point-min))
            (remove-auto-inserted-spaces t))
