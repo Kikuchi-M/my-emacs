@@ -334,7 +334,7 @@ by command. "))))
                   (backward-char) (point)))
            (word (if (or (not bop)
                          (string-match
-                          "[\\.=;:&|^/*+-]"
+                          "[\\.=;:,&|^/*+-]"
                           (char-to-string (save-excursion (char-after (back-to-bol-or-nonspace)))))
                          (string-match
                           "^[ \t]+$"
