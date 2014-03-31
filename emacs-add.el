@@ -246,6 +246,11 @@ by command. "))))
 ;;(unless (package-installed-p 'auto-complete)
 ;;  (package-install 'auto-complete))
 
+;; csharp-mode - http://www.emacswiki.org/emacs/CSharpMode
+(add-to-list 'load-path (concat emacs-add-dir "csharp-mode"))
+(if (not (require 'csharp-mode nil t))
+    (messsage "Unable to load csharp-mode."))
+
 ;; paredit - http://mumble.net/~campbell/git/paredit.git/
 ;;         - https://github.com/goncha/paredit
 (add-to-list 'load-path (concat emacs-add-dir "paredit"))
@@ -261,7 +266,9 @@ by command. "))))
                   'scheme-mode-hook
                   'javascript-mode-hook
                   'c-mode-hook
-                  'c++-mode-hook))
+                  'c++-mode-hook
+                  'csharp-mode-hook
+                  ))
     (add-hook hooks 'enable-paredit-mode)))
 
 ;; qml-mode - https://github.com/Kikuchi-M/qml-mode
@@ -340,7 +347,10 @@ by command. "))))
 This can execute in major modes of c family or qml-mode."
    (interactive)
    (let* ((m (buffer-mode (current-buffer))))
-     (if (or (eq m 'qml-mode) (c-major-mode-is m) (eq m 'js-mode))
+     (if (or (eq m 'qml-mode)
+             (c-major-mode-is m)
+             (eq m 'js-mode)
+             (eq m 'csharp-mode))
          (save-excursion
            (goto-char (point-min))
            (remove-auto-inserted-spaces t))
