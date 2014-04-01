@@ -343,7 +343,7 @@ by command. "))))
                      nil
                    (message "getting previous word")
                    (save-excursion (backward-word) (word-at-point)))))
-      (when (and word (not (string-match "\\(return\\|void\\|if\\|switch\\|when\\|for\\)" word)))
+      (when (and word (not (string-match "^\\(return\\|void\\|if\\|switch\\|when\\|for\\)$" word)))
         (c-hungry-delete-backwards))
       (remove-auto-inserted-spaces hit))))
 
@@ -386,7 +386,7 @@ This can execute in major modes of c family or qml-mode."
     (add-to-list 'auto-mode-alist types))
 
   (let* ((cpp-map c++-mode-map))
-    (define-key cpp-map (kbd "<f6>") 'ff-find-other-file)
+    (define-key cpp-map (kbd "<f6>") 'ff-get-other-file)
     (setq c++-mode-map cpp-map))
 
   (defun add-cc-other-assoc (key others)
