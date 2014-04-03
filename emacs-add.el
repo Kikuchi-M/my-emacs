@@ -264,6 +264,7 @@ by command. "))))
                   'lisp-mode-hook
                   'lisp-interaction-mode-hook
                   'scheme-mode-hook
+                  'clojure-mode-hook
                   'javascript-mode-hook
                   'c-mode-hook
                   'c++-mode-hook
@@ -277,6 +278,11 @@ by command. "))))
           (lambda ()
             (setq python-indent-offset 2))
           )
+
+;; clojure-mode - https://github.com/clojure-emacs/clojure-mode
+(add-to-list 'load-path (concat emacs-add-dir "clojure-mode"))
+(if (not (require 'clojure-mode nil t))
+    (message "Unable to load clojure-mode."))
 
 ;; qml-mode - https://github.com/Kikuchi-M/qml-mode
 (add-to-list 'load-path (concat emacs-add-dir "qml-mode"))
