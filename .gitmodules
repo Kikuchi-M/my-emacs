@@ -19,3 +19,6 @@
 [submodule "buffer-collect"]
 	path = buffer-collect
 	url = https://github.com/Kikuchi-M/buffer-collect.git
+[submodule "clojure-mode"]
+	path = clojure-mode
+	url = http://github.com/clojure-emacs/clojure-mode.git
