@@ -249,7 +249,7 @@ by command. "))))
 ;; csharp-mode - http://www.emacswiki.org/emacs/CSharpMode
 (add-to-list 'load-path (concat emacs-add-dir "csharp-mode"))
 (if (not (require 'csharp-mode nil t))
-    (messsage "Unable to load csharp-mode."))
+    (message "Unable to load csharp-mode."))
 
 ;; paredit - http://mumble.net/~campbell/git/paredit.git/
 ;;         - https://github.com/goncha/paredit
