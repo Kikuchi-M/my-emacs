@@ -270,6 +270,7 @@ by command. "))))
                   'c++-mode-hook
                   'csharp-mode-hook
                   'python-mode-hook
+                  'qml-mode-hook
                   ))
     (add-hook hooks 'enable-paredit-mode)))
 
@@ -288,9 +289,7 @@ by command. "))))
 (add-to-list 'load-path (concat emacs-add-dir "qml-mode"))
 (if (not (require 'qml-mode nil t))
     (message "Unable to load qml-mode.")
-  (add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-mode))
-  (when (functionp 'enable-paredit-mode)
-    (add-hook 'qml-mode-hook 'enable-paredit-mode)))
+  (add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-mode)))
 
 ;; tab, indent
 (setq-default indent-tabs-mode nil)
