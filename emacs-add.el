@@ -1,3 +1,4 @@
+
 ;; emacs-lisp file for customizing emacs.
 ;;
 ;; Usage :
@@ -33,9 +34,12 @@ by command. "))))
 (message "emacs-add: %s" emacs-add-dir)
 
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/"))
+(dolist (packs (list
+                (cons "melpa" "http://melpa.milkbox.net/packages/")
+                (cons "marmalade" "http://marmalade-repo.org/packages/")))
+  (add-to-list 'package-archives packs))
 (package-initialize)
+
 (require 'cl)
 
 ;; japanese input method
@@ -271,6 +275,7 @@ by command. "))))
                   'csharp-mode-hook
                   'python-mode-hook
                   'qml-mode-hook
+                  'cider-repl-mode
                   ))
     (add-hook hooks 'enable-paredit-mode)))
 
@@ -280,10 +285,37 @@ by command. "))))
             (setq python-indent-offset 2))
           )
 
+;; cider - https://github.com/clojure-emacs/cider/
 ;; clojure-mode - https://github.com/clojure-emacs/clojure-mode
+;;
+;; dependencis
+;;  dash - https://github.com/magnars/dash.el
+;;  epl - https://github.com/cask/epl
+;;  pkg-info.el - https://github.com/lunaryorn/pkg-info.el
+;;
+;; (let ((packs (list 'starter-kit
+;;                    'starter-kit-lisp
+;;                    'starter-kit-bindings
+;;                    'starter-kit-eshell
+;;                    'clojure-mode
+;;                    'clojure-test-mode
+;;                    'cider)))
+;;   (mapcar (lambda (pack)
+;;             (unless (package-installed-p pack)
+;;               (package-install pack)))
+;;           packs))
+(add-to-list 'load-path (concat emacs-add-dir "dash.el"))
+(add-to-list 'load-path (concat emacs-add-dir "epl"))
+(add-to-list 'load-path (concat emacs-add-dir "pkg-info.el"))
 (add-to-list 'load-path (concat emacs-add-dir "clojure-mode"))
-(if (not (require 'clojure-mode nil t))
-    (message "Unable to load clojure-mode."))
+(add-to-list 'load-path (concat emacs-add-dir "cider"))
+(let ((packs (list 'clojure-mode
+                   'cider
+                   'clojure-test-mode)))
+  (mapcar (lambda (p)
+            (unless (require p nil t)
+              (message "Unable to load %s" p)))
+          packs))
 
 ;; qml-mode - https://github.com/Kikuchi-M/qml-mode
 (add-to-list 'load-path (concat emacs-add-dir "qml-mode"))

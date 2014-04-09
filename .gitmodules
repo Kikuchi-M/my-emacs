@@ -21,4 +21,16 @@
 	url = https://github.com/Kikuchi-M/buffer-collect.git
 [submodule "clojure-mode"]
 	path = clojure-mode
-	url = http://github.com/clojure-emacs/clojure-mode.git
+	url = https://github.com/clojure-emacs/clojure-mode.git
+[submodule "cider"]
+	path = cider
+	url = https://github.com/clojure-emacs/cider.git
+[submodule "pkg-info.el"]
+	path = pkg-info.el
+	url = https://github.com/lunaryorn/pkg-info.el.git
+[submodule "epl"]
+	path = epl
+	url = https://github.com/cask/epl.git
+[submodule "dash.el"]
+	path = dash.el
+	url = https://github.com/magnars/dash.el.git
