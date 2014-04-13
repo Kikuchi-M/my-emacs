@@ -275,7 +275,7 @@ by command. "))))
                   'csharp-mode-hook
                   'python-mode-hook
                   'qml-mode-hook
-                  'cider-repl-mode
+                  'cider-repl-mode-hook
                   ))
     (add-hook hooks 'enable-paredit-mode)))
 
@@ -311,6 +311,7 @@ by command. "))))
 (add-to-list 'load-path (concat emacs-add-dir "cider"))
 (let ((packs (list 'clojure-mode
                    'cider
+                   'cider-macroexpansion
                    'clojure-test-mode)))
   (mapcar (lambda (p)
             (unless (require p nil t)
