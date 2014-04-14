@@ -285,13 +285,19 @@ by command. "))))
             (setq python-indent-offset 2))
           )
 
-;; cider - https://github.com/clojure-emacs/cider/
 ;; clojure-mode - https://github.com/clojure-emacs/clojure-mode
+;; contains:
+;;   clojure-test-mode
+;;   dependes:
+;;     cider (see below)
 ;;
+;; cider - https://github.com/clojure-emacs/cider/
 ;; dependencis
+;;  clojure-mode (see above)
 ;;  dash - https://github.com/magnars/dash.el
-;;  epl - https://github.com/cask/epl
-;;  pkg-info.el - https://github.com/lunaryorn/pkg-info.el
+;;  pkg-info.el - https2://github.com/lunaryorn/pkg-info.el
+;;  dependencis:
+;;    epl - https://github.com/cask/epl
 ;;
 ;; (let ((packs (list 'starter-kit
 ;;                    'starter-kit-lisp
