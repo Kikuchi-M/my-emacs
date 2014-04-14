@@ -322,8 +322,7 @@ by command. "))))
 (add-to-list 'load-path (concat emacs-add-dir "qml-mode"))
 (if (not (require 'qml-mode nil t))
     (message "Unable to load qml-mode.")
-  ;;(add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-mode))
-  )
+  (require 'qml-tools nil t))
 
 ;; tab, indent
 (setq-default indent-tabs-mode nil)
