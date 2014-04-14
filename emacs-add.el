@@ -131,6 +131,7 @@ by command. "))))
                 'comint-output-filter-functions
                 'ielm-mode-hook
                 'eshell-mode-hook
+                'cider-repl-mode-hook
                 'compilation-mode-hook
                 'messages-buffer-mode-hook
                 'help-mode-hook
