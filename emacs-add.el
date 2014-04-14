@@ -299,30 +299,27 @@ by command. "))))
 ;;  dependencis:
 ;;    epl - https://github.com/cask/epl
 ;;
-;; (let ((packs (list 'starter-kit
-;;                    'starter-kit-lisp
-;;                    'starter-kit-bindings
-;;                    'starter-kit-eshell
-;;                    'clojure-mode
-;;                    'clojure-test-mode
-;;                    'cider)))
-;;   (mapcar (lambda (pack)
-;;             (unless (package-installed-p pack)
-;;               (package-install pack)))
-;;           packs))
-(add-to-list 'load-path (concat emacs-add-dir "dash.el"))
+;; (dolist (packs (list 'epl
+;;                      'pkg-info
+;;                      'dash
+;;                      'clojure-mode
+;;                      'cider
+;;                      'clojure-test-mode))
+;;   ((lambda (pack)
+;;      (unless (package-installed-p pack) (package-install pack)))
+;;    packs))
 (add-to-list 'load-path (concat emacs-add-dir "epl"))
+(add-to-list 'load-path (concat emacs-add-dir "dash.el"))
 (add-to-list 'load-path (concat emacs-add-dir "pkg-info.el"))
 (add-to-list 'load-path (concat emacs-add-dir "clojure-mode"))
 (add-to-list 'load-path (concat emacs-add-dir "cider"))
-(let ((packs (list 'clojure-mode
-                   'cider
-                   'cider-macroexpansion
-                   'clojure-test-mode)))
-  (mapcar (lambda (p)
-            (unless (require p nil t)
-              (message "Unable to load %s" p)))
-          packs))
+(dolist (packs (list 'clojure-mode
+                     'cider
+                     'cider-macroexpansion
+                     'clojure-test-mode))
+  ((lambda (p)
+     (unless (require p nil t) (message "Unable to load %s" p)))
+   packs))
 
 ;; qml-mode - https://github.com/Kikuchi-M/qml-mode
 (add-to-list 'load-path (concat emacs-add-dir "qml-mode"))
