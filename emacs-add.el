@@ -241,6 +241,12 @@ by command. "))))
 ;;(unless (package-installed-p 'google-c-style)
 ;;  (package-install 'google-c-style))
 
+;; gyp mode - https://code.google.com/p/gyp/
+;; license of source files is NEW BSD LICENSE
+(add-to-list 'load-path (concat emacs-add-dir "gyp"))
+(if (not (require 'gyp nil t))
+    (message "Unable to load gyp."))
+
 ;; auto-complete - https://github.com/auto-complete/auto-complete
 ;; auto-complete dependes on poup-el - https://github.com/auto-complete/popup-el
 (add-to-list 'load-path (concat emacs-add-dir "popup-el"))
