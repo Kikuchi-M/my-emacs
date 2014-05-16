@@ -336,13 +336,6 @@ by command. "))))
                   'lisp-interaction-mode-hook
                   'scheme-mode-hook
                   'clojure-mode-hook
-                  'javascript-mode-hook
-                  'c-mode-hook
-                  'c++-mode-hook
-                  'csharp-mode-hook
-                  'python-mode-hook
-                  'qml-mode-hook
-                  'cider-repl-mode-hook
                   ))
     (add-hook hooks 'enable-paredit-mode)))
 
