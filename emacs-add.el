@@ -527,6 +527,13 @@ This can execute in major modes of c family or qml-mode."
   (add-cc-other-assoc "\\.tcc\\'" (list ".h" ".cpp"))
   )
 
+;; ----- compilation, debug -----
+(when (boundp 'compilation-mode-map)
+  (let ((map compilation-mode-map))
+    (setf compilation-mode-map map)
+    (define-key map (kbd "n") 'next-line)
+    (define-key map (kbd "p") 'previous-line)))
+
 ;; ----- desktop -----
 (desktop-save-mode t)
 (global-set-key (kbd "C-/ C-d") 'desktop-change-dir)
