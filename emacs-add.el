@@ -157,7 +157,24 @@ by command. "))))
 (set-face-attribute 'region nil :background "SteelBlue1")
 
 ;; ----- interpreter -----
+;; inferior emacs lisp mode
 (global-set-key (kbd "C-/ C-i") 'ielm)
+
+;; ipython
+(when (and (eq system-type 'gnu/linux)
+           (or (file-exists-p "/usr/bin/ipython")
+               (file-exists-p "/usr/local/bin/ipython")))
+  (setq
+   python-shell-interpreter "ipython"
+   python-shell-interpreter-args ""
+   python-shell-prompt-regexp "\\[[0-9]+\\]: "
+   python-shell-prompt-output-regexp "\\[[0-9]+\\]: "
+   python-shell-completion-setup-code
+   "from IPython.core.completerlib import module_completion"
+   python-shell-completion-module-string-code
+   "';'.join(module_completion('''%s'''))\n"
+   python-shell-completion-string-code
+   "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
 
 ;; ----- project, directories -----
 ;; direx original - https://github.com/m2ym/direx-el
