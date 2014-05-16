@@ -473,6 +473,15 @@ This can execute in major modes of c family or qml-mode."
     (downcase-region b e)
     (goto-char e)))
 
+(dolist (keys (list (kbd "C-; w")
+                    (kbd "C-; C-w")))
+  (global-set-key
+   keys
+   (lambda (&optional n)
+     (interactive "p")
+     (save-excursion
+       (copy-region-as-kill (point) (progn (forward-word n) (point)))))))
+
 ;; c++ mode
 (if (not (and (require 'cc-mode nil t)
               (require 'find-file nil t)
