@@ -305,7 +305,11 @@ by command. "))))
 
 ;; gyp mode - https://code.google.com/p/gyp/
 ;; license of source files is NEW BSD LICENSE
-(add-to-list 'load-path (concat emacs-add-dir "gyp"))
+(let* ((system system-type)
+       (gyp-path
+        (cond ((eq system 'windows-nt) (concat emacs-add-dir "../emacs-plugins/gyp"))
+              ((eq system 'gnu/linux) (concat emacs-add-dir "gyp")))))
+  (add-to-list 'load-path gyp-path))
 (if (not (require 'gyp nil t))
     (message "Unable to load gyp."))
 
