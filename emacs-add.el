@@ -156,7 +156,7 @@ by command. "))))
   (add-hook hooks (lambda (&optional opt)
                     (linum-mode-off))))
 
-(set-face-attribute 'region nil :background "SteelBlue1")
+(set-face-attribute 'region nil :background "#a9dcff")
 
 ;; ----- interpreter -----
 ;; inferior emacs lisp mode
