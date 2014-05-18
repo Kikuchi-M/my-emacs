@@ -115,6 +115,8 @@ by command. "))))
 
 (global-set-key (kbd "C-x w d") 'toggle-window-dedicated)
 
+(defun register-clear-list () (interactive) (setq register-alist '()))
+
 ;; ----- display, faces -----
 (global-hl-line-mode t)
 (when (facep 'highlight)
