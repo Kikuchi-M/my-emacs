@@ -34,3 +34,6 @@
 [submodule "dash.el"]
 	path = dash.el
 	url = https://github.com/magnars/dash.el.git
+[submodule "gdb-debugger"]
+	path = gdb-debugger
+	url = https://github.com/Kikuchi-M/gdb-debugger.git
