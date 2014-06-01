@@ -396,11 +396,11 @@ by command. "))))
 ;; tab, indent
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
-(global-set-key
- (kbd "C-<tab>")
- (lambda ()
-   (interactive)
-   (indent-region (point-min) (point-max))))
+
+(defun indent-all-lines ()
+  (interactive)
+  (indent-region (point-min) (point-max)))
+(global-set-key (kbd "C-<tab>") 'indent-all-lines)
 
 ;; key bindings
 (global-set-key (kbd "C-z") 'undo)
