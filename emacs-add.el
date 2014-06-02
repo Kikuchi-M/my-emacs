@@ -49,6 +49,38 @@ by command. "))))
       (message "Unable to load mozc.")
     (setq default-input-method "japanese-mozc")))
 
+;; ----- el utility -----
+(defun buffer-mode (buffer-or-string)
+  "Get major mode of paticular buffer."
+  (with-current-buffer buffer-or-string major-mode))
+
+(defun eval-sexp-forwardn (&optional n)
+  (interactive "P")
+  (if (not (eq (buffer-mode (current-buffer)) 'emacs-lisp-mode))
+      (message "The buffer is not elisp.")
+    (let ((n1 (if (null n) 1 n)))
+      (loop repeat n1
+            do (let ((b (point))
+                     (e (progn (forward-sexp) (point))))
+                 (eval-region b e))))))
+
+(defun yn-prompt (&optional prompt)
+  (let ((res nil) (cont t))
+    (while cont
+      (let ((k (char-to-string (read-key (concat prompt "(y/n): ")))))
+        (cond ((string-equal k "") (keyboard-quit))
+              ((or (string-equal k "y") (string-equal k "Y"))
+               (setq res t cont nil))
+              ((or (string-equal k "n") (string-equal k "N"))
+               (setq cont nil))
+              (t (message "input key y or n")
+                 (sleep-for 2))
+              )))
+    res))
+
+(global-set-key (kbd "C-; C-e") 'eval-sexp-forwardn)
+(global-set-key (kbd "C-; e") 'eval-sexp-forwardn)
+
 ;; ----- unbinded keys -----
 (global-unset-key (kbd "C-/"))
 (global-unset-key (kbd "C-z"))
@@ -177,6 +209,18 @@ by command. "))))
    "';'.join(module_completion('''%s'''))\n"
    python-shell-completion-string-code
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
+
+;; ----- desktop -----
+(desktop-save-mode t)
+(global-set-key (kbd "C-/ C-d") 'desktop-change-dir)
+(add-hook 'desktop-after-read-hook
+          (lambda ()
+            (setq search-ring nil)
+            (setq regexp-search-ring nil)
+            (setq file-name-history nil)
+            (if (not (and (require 'misc-desktop nil t) (functionp 'misc-init-desktop)))
+                (message "Unable to load misc-desktop.")
+              (misc-init-desktop))))
 
 ;; ----- project, directories -----
 ;; ebrowse tree/member key map
@@ -539,50 +583,6 @@ This can execute in major modes of c family or qml-mode."
     (setf compilation-mode-map map)
     (define-key map (kbd "n") 'next-line)
     (define-key map (kbd "p") 'previous-line)))
-
-;; ----- desktop -----
-(desktop-save-mode t)
-(global-set-key (kbd "C-/ C-d") 'desktop-change-dir)
-(add-hook 'desktop-after-read-hook
-          (lambda ()
-            (setq search-ring nil)
-            (setq regexp-search-ring nil)
-            (setq file-name-history nil)
-            (if (not (and (require 'misc-desktop nil t) (functionp 'misc-init-desktop)))
-                (message "Unable to load misc-desktop.")
-              (misc-init-desktop))))
-
-;; ----- el utility -----
-(defun buffer-mode (buffer-or-string)
-  "Get major mode of paticular buffer."
-  (with-current-buffer buffer-or-string major-mode))
-
-(defun eval-sexp-forwardn (&optional n)
-  (interactive "P")
-  (if (not (eq (buffer-mode (current-buffer)) 'emacs-lisp-mode))
-      (message "The buffer is not elisp.")
-    (let ((n1 (if (null n) 1 n)))
-      (loop repeat n1
-            do (let ((b (point))
-                     (e (progn (forward-sexp) (point))))
-                 (eval-region b e))))))
-
-(defun yn-prompt (&optional prompt)
-  (let ((res nil) (cont t))
-    (while cont
-      (let ((k (char-to-string (read-key (concat prompt "(y/n): ")))))
-        (cond ((string-equal k "") (keyboard-quit))
-              ((or (string-equal k "y") (string-equal k "Y"))
-               (setq res t cont nil))
-              ((or (string-equal k "n") (string-equal k "N"))
-               (setq cont nil))
-              (t (message "input key y or n")
-                 (sleep-for 2))
-              )))
-    res))
-
-(global-set-key (kbd "C-; C-e") 'eval-sexp-forwardn)
-(global-set-key (kbd "C-; e") 'eval-sexp-forwardn)
 
 ;; ----- private utility -----
 (add-to-list 'load-path (concat emacs-add-dir "emacs-private"))
