@@ -443,6 +443,17 @@ by command. "))))
     (message "Unable to load qml-mode.")
   (require 'qml-tools nil t))
 
+;; g-compile - https://github.com/Kikuchi-M/g-compile
+(add-to-list 'load-path (concat emacs-add-dir "g-compile"))
+(if (not (require 'g-compile nil t))
+    (message "Unable to load g-compile.")
+  (variables-to-desktop-globals 'g-compile-repository-dir
+                                'g-compile-projects)
+  (global-set-key (kbd "C-/ h" 'g-compile-runhooks))
+  (global-set-key (kbd "C-/ y" (lambda () (interactive) (g-compile-runhooks t))))
+  (global-set-key (kbd "C-/ r" 'g-compile-ninja))
+  (global-set-key (kbd "C-/ e" (lambda () (interactive) (g-compile-ninja t)))))
+
 ;; tab, indent
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
@@ -589,6 +600,14 @@ This can execute in major modes of c family or qml-mode."
     (setf compilation-mode-map map)
     (define-key map (kbd "n") 'next-line)
     (define-key map (kbd "p") 'previous-line)))
+
+;; gdb-debugger - https://github.com/Kikuchi-M/gdb-debugger
+(when (eq system-type 'gnu/linux)
+  (add-to-list (concat emacs-add-dir "gdb-debugger"))
+  (if (not (require 'gdb-debugger nil t))
+      (message "Unable to load gdb-debugger.")
+    (variables-to-desktop-globals gdb-debugger-executable-list)))
+
 
 ;; ----- private utility -----
 (add-to-list 'load-path (concat emacs-add-dir "emacs-private"))
