@@ -222,6 +222,12 @@ by command. "))))
                 (message "Unable to load misc-desktop.")
               (misc-init-desktop))))
 
+(defun variables-to-desktop-globals (&rest var)
+  (mapc (lambda (v)
+          (add-to-list 'desktop-globals-to-save v)
+          (message "%s added to desktop-globals-to-save." v))
+        var))
+
 ;; ----- project, directories -----
 ;; ebrowse tree/member key map
 (if (not (require 'ebrowse))
