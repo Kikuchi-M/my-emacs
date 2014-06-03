@@ -449,10 +449,10 @@ by command. "))))
     (message "Unable to load g-compile.")
   (variables-to-desktop-globals 'g-compile-repository-dir
                                 'g-compile-projects)
-  (global-set-key (kbd "C-/ h" 'g-compile-runhooks))
-  (global-set-key (kbd "C-/ y" (lambda () (interactive) (g-compile-runhooks t))))
-  (global-set-key (kbd "C-/ r" 'g-compile-ninja))
-  (global-set-key (kbd "C-/ e" (lambda () (interactive) (g-compile-ninja t)))))
+  (global-set-key (kbd "C-/ h") 'g-compile-runhooks)
+  (global-set-key (kbd "C-/ y") (lambda () (interactive) (g-compile-runhooks t)))
+  (global-set-key (kbd "C-/ r") 'g-compile-ninja)
+  (global-set-key (kbd "C-/ e") (lambda () (interactive) (g-compile-ninja t))))
 
 ;; tab, indent
 (setq-default indent-tabs-mode nil)
@@ -603,7 +603,7 @@ This can execute in major modes of c family or qml-mode."
 
 ;; gdb-debugger - https://github.com/Kikuchi-M/gdb-debugger
 (when (eq system-type 'gnu/linux)
-  (add-to-list (concat emacs-add-dir "gdb-debugger"))
+  (add-to-list 'load-path (concat emacs-add-dir "gdb-debugger"))
   (if (not (require 'gdb-debugger nil t))
       (message "Unable to load gdb-debugger.")
     (variables-to-desktop-globals gdb-debugger-executable-list)))
