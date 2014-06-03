@@ -99,6 +99,10 @@ by command. "))))
 
 (set-face-attribute 'default nil :height 90)
 
+(show-paren-mode t)
+(set-face-attribute 'show-paren-match nil :background "#73d0b8")
+(set-face-attribute 'show-paren-mismatch nil :background "#f43050")
+
 (global-set-key (kbd "M-<down>") 'windmove-down)
 (global-set-key (kbd "M-<up>") 'windmove-up)
 (global-set-key (kbd "M-<left>") 'windmove-left)
