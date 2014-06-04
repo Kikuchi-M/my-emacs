@@ -610,7 +610,7 @@ This can execute in major modes of c family or qml-mode."
   (add-to-list 'load-path (concat emacs-add-dir "gdb-debugger"))
   (if (not (require 'gdb-debugger nil t))
       (message "Unable to load gdb-debugger.")
-    (variables-to-desktop-globals gdb-debugger-executable-list)))
+    (variables-to-desktop-globals 'gdb-debugger-executable-list)))
 
 
 ;; ----- private utility -----
