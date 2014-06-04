@@ -228,8 +228,9 @@ by command. "))))
 
 (defun variables-to-desktop-globals (&rest var)
   (mapc (lambda (v)
-          (add-to-list 'desktop-globals-to-save v)
-          (message "%s added to desktop-globals-to-save." v))
+          (when (and v (boundp v))
+            (add-to-list 'desktop-globals-to-save v)
+            (message "%s added to desktop-globals-to-save." v)))
         var))
 
 ;; ----- project, directories -----
