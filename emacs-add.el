@@ -179,8 +179,9 @@ by command. "))))
   (add-hook hooks (lambda (&optional opt)
                     (truncate-lines-off))))
 
-(let ((mb (get-buffer "*Messages*")))
-  (when mb
+(let ((mb (get-buffer "*Messages*"))
+      (req (require 'simple nil t)))
+  (when (and mb req (functionp 'messages-buffer-mode))
     (set-buffer mb)
     (messages-buffer-mode)))
 
