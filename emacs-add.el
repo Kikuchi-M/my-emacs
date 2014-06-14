@@ -155,8 +155,7 @@ by command. "))))
 
 ;; ----- display, faces -----
 (global-hl-line-mode t)
-(when (facep 'highlight)
-  (set-face-attribute 'highlight nil :background "#cdf0d9"))
+(set-face-attribute 'hl-line nil :background "#cef0e9")
 
 (setq-default truncate-lines t)
 (defun truncate-lines-off () (setq truncate-lines nil))
