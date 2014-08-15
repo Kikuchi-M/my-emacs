@@ -159,6 +159,7 @@ by command. "))))
 
 (setq-default truncate-lines t)
 (defun truncate-lines-off () (setq truncate-lines nil))
+(global-set-key (kbd "C-x g l") (lambda () (interactive (toggle-truncate-lines))))
 
 (setq-default column-number-mode t)
 
