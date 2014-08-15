@@ -443,6 +443,15 @@ by command. "))))
      (unless (require p nil t) (message "Unable to load %s" p)))
    packs))
 
+;; scala-mode - https://github.com/hvesalai/scala-mode2
+;; sbt-mode   - https://github.com/hvesalai/sbt-mode
+(dolist (dirs '("scala-mode2" "sbt-mode"))
+  (add-to-list 'load-path (concat emacs-add-dir dirs)))
+(if (not (require 'scala-mode2 nil t))
+    (message "Unable to load scala-mode2."))
+(if (not (require 'sbt-mode nil t))
+    (message "Unable to load sbt-mode."))
+
 ;; qml-mode - https://github.com/Kikuchi-M/qml-mode
 (add-to-list 'load-path (concat emacs-add-dir "qml-mode"))
 (if (not (require 'qml-mode nil t))
