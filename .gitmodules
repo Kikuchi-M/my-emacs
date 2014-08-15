@@ -40,3 +40,9 @@
 [submodule "g-compile"]
 	path = g-compile
 	url = https://github.com/Kikuchi-M/g-compile.git
+[submodule "scala-mode2"]
+	path = scala-mode2
+	url = https://github.com/hvesalai/scala-mode2.git
+[submodule "sbt-mode"]
+	path = sbt-mode
+	url = https://github.com/hvesalai/sbt-mode.git
