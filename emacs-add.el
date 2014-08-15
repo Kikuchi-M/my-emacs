@@ -276,6 +276,26 @@ by command. "))))
         (define-key sup (kbd "r") 'ebrowse-display-friends-member-list)
         ))))
 
+;; hs-minor-mode
+(defun set-hs-minor-mode-map ()
+  (if (not (boundp 'hs-minor-mode-map))
+      (message "Could not set hs-minor-mode-map.")
+    (if (and (boundp hs-minor-mode) hs-minor-mode)
+        (let* ((map hs-minor-mode-map)
+               (_ (setf hs-minor-mode-map map))
+               (sup (make-sparse-keymap)))
+          (suppress-keymap sup t)
+          (define-key map (kbd "C-c h s") sup)
+          (define-key sup (kbd "h") 'hs-hide-block)
+          (define-key sup (kbd "s") 'hs-show-block)
+          (define-key sup (kbd "g") 'hs-toggle-hiding)
+          (define-key sup (kbd "c") 'hs-hide-all)
+          (define-key sup (kbd "e") 'hs-show-all)))))
+
+(if (not (require 'hideshow nil t))
+    (message "Unable to load hideshow.")
+  (add-hook 'hs-minor-mode-hook 'set-hs-minor-mode-map))
+
 ;; direx original - https://github.com/m2ym/direx-el
 ;;(unless (package-installed-p 'direx)
 ;;  (package-install 'direx))
