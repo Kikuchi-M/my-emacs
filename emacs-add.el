@@ -589,9 +589,13 @@ This can execute in major modes of c family or qml-mode."
                   '("\\.tcc\\'" . c++-mode)))
     (add-to-list 'auto-mode-alist types))
 
-  (let* ((cpp-map c++-mode-map))
-    (define-key cpp-map (kbd "<f6>") 'ff-get-other-file)
-    (setq c++-mode-map cpp-map))
+  (dolist (modes (list c++-mode-map
+                       c-mode-map))
+    (funcall (lambda (mode)
+               (let ((m mode))
+                 (define-key m (kbd "<f6>") 'ff-get-other-file)
+                 (setq mode m)))
+             modes))
 
   (defun add-cc-other-assoc (key others)
     (if (not (and key others
