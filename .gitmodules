@@ -46,3 +46,6 @@
 [submodule "sbt-mode"]
 	path = sbt-mode
 	url = https://github.com/hvesalai/sbt-mode.git
+[submodule "predictive"]
+	path = predictive
+	url = http://www.dr-qubit.org/git/predictive.git

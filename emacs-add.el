@@ -437,19 +437,20 @@ by command. "))))
 ;; dependencis
 ;;  clojure-mode (see above)
 ;;  dash - https://github.com/magnars/dash.el
-;;  pkg-info.el - https2://github.com/lunaryorn/pkg-info.el
+;;  pkg-info.el - https://github.com/lunaryorn/pkg-info.el
+;;  pridictive - git clone http://www.dr-qubit.org/git/predictive.git
 ;;  dependencis:
 ;;    epl - https://github.com/cask/epl
 ;;
 (add-to-list 'load-path (concat emacs-add-dir "epl"))
 (add-to-list 'load-path (concat emacs-add-dir "dash.el"))
 (add-to-list 'load-path (concat emacs-add-dir "pkg-info.el"))
+(add-to-list 'load-path (concat emacs-add-dir "predictive"))
 (add-to-list 'load-path (concat emacs-add-dir "clojure-mode"))
 (add-to-list 'load-path (concat emacs-add-dir "cider"))
 (dolist (packs (list 'clojure-mode
                      'cider
-                     'cider-macroexpansion
-                     'clojure-test-mode))
+                     'cider-macroexpansion))
   ((lambda (p)
      (unless (require p nil t) (message "Unable to load %s" p)))
    packs))
