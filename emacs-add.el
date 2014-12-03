@@ -441,15 +441,6 @@ by command. "))))
 ;;  dependencis:
 ;;    epl - https://github.com/cask/epl
 ;;
-;; (dolist (packs (list 'epl
-;;                      'pkg-info
-;;                      'dash
-;;                      'clojure-mode
-;;                      'cider
-;;                      'clojure-test-mode))
-;;   ((lambda (pack)
-;;      (unless (package-installed-p pack) (package-install pack)))
-;;    packs))
 (add-to-list 'load-path (concat emacs-add-dir "epl"))
 (add-to-list 'load-path (concat emacs-add-dir "dash.el"))
 (add-to-list 'load-path (concat emacs-add-dir "pkg-info.el"))
