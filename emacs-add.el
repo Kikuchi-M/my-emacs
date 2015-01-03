@@ -64,20 +64,6 @@ by command. "))))
                      (e (progn (forward-sexp) (point))))
                  (eval-region b e))))))
 
-(defun yn-prompt (&optional prompt)
-  (let ((res nil) (cont t))
-    (while cont
-      (let ((k (char-to-string (read-key (concat prompt "(y/n): ")))))
-        (cond ((string-equal k "") (keyboard-quit))
-              ((or (string-equal k "y") (string-equal k "Y"))
-               (setq res t cont nil))
-              ((or (string-equal k "n") (string-equal k "N"))
-               (setq cont nil))
-              (t (message "input key y or n")
-                 (sleep-for 2))
-              )))
-    res))
-
 (global-set-key (kbd "C-; C-e") 'eval-sexp-forwardn)
 (global-set-key (kbd "C-; e") 'eval-sexp-forwardn)
 
