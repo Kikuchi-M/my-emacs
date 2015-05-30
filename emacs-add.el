@@ -16,10 +16,9 @@
 (set-default-coding-systems 'utf-8)
 (prefer-coding-system 'utf-8)
 
-(when (eq system-type 'windows-nt) (set-frame-font "Consolas"))
-(when (eq system-type 'gnu/linux)
-  (set-frame-font
-   "-unknown-DejaVu Sans Mono-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1"))
+(defun is-win () (eq system-type 'windows-nt))
+(defun is-linux () (eq system-type 'gnu/linux))
+(defun is-mac () (eq system-type 'darwin))
 
 (defconst emacs-add-dir
   (let* ((emacs-add load-file-name))
@@ -39,6 +38,11 @@ by command. "))))
                 (cons "marmalade" "http://marmalade-repo.org/packages/")))
   (add-to-list 'package-archives packs))
 (package-initialize)
+
+(when (is-win) (set-frame-font "Consolas"))
+(when (is-linux)
+  (set-frame-font
+   "-unknown-DejaVu Sans Mono-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1"))
 
 (require 'cl)
 
