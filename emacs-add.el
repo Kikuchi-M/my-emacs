@@ -60,13 +60,15 @@ by command. "))))
 
 (defun eval-sexp-forwardn (&optional n)
   (interactive "P")
-  (if (not (eq (buffer-mode (current-buffer)) 'emacs-lisp-mode))
-      (message "The buffer is not elisp.")
-    (let ((n1 (if (null n) 1 n)))
-      (loop repeat n1
-            do (let ((b (point))
-                     (e (progn (forward-sexp) (point))))
-                 (eval-region b e))))))
+  (let ((mode (buffer-mode (current-buffer))))
+    (if (not (or (eq mode 'emacs-lisp-mode)
+                 (eq mode 'lisp-interaction-mode)))
+        (message "The buffer is not elisp.")
+      (let ((n1 (if (null n) 1 n)))
+        (loop repeat n1
+              do (let ((b (point))
+                       (e (progn (forward-sexp) (point))))
+                   (eval-region b e)))))))
 
 (global-set-key (kbd "C-; C-e") 'eval-sexp-forwardn)
 (global-set-key (kbd "C-; e") 'eval-sexp-forwardn)
