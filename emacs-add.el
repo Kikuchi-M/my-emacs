@@ -397,7 +397,7 @@ by command. "))))
     (message "Unable to load csharp-mode."))
 
 ;; paredit - http://mumble.net/~campbell/git/paredit.git/
-;;         - https://github.com/goncha/paredit
+;;         - https://github.com/emacsmirror/paredit
 (add-to-list 'load-path (concat emacs-add-dir "paredit"))
 (if (not (require 'paredit nil t))
     (message "Unable to load paredit.")
