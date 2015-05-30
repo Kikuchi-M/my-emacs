@@ -387,7 +387,7 @@ by command. "))))
 (add-to-list 'load-path (concat emacs-add-dir "auto-complete"))
 (if (not (require 'auto-complete nil t))
     (message "Unable to load auto-complete.")
-  (global-auto-complete-mode 1))
+  (global-auto-complete-mode nil))
 ;;(unless (package-installed-p 'auto-complete)
 ;;  (package-install 'auto-complete))
 
