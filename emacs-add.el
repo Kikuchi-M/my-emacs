@@ -413,11 +413,37 @@ by command. "))))
                   ))
     (add-hook hooks 'enable-paredit-mode)))
 
-;; python-mode
+;; python
 (add-hook 'python-mode-hook
           (lambda ()
-            (setq python-indent-offset 2))
-          )
+            (setq python-indent-offset 2)))
+
+(when (and (is-linux)
+           (eq (call-process-shell-command "which flake8") 0)
+           (require 'tramp nil t)
+           (require 'flymake nil t)
+           (require 'python nil t))
+  (defun flymake-flake8-init ()
+    (let* ((temp-file
+            (flymake-init-create-temp-buffer-copy
+             'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file (file-name-directory buffer-file-name))))
+      (list "flake8" (list local-file "--ignore=E111,E121,E501"))))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.py\\'" flymake-flake8-init))
+  (add-hook 'python-mode-hook
+            (lambda (&optional opt)
+              (flymake-mode t)))
+  (setq python-mode-map
+        (let ((map python-mode-map))
+          (define-key map (kbd "C-c e")
+            'flymake-display-err-menu-for-current-line)
+          (define-key map (kbd "C-c f")
+            'flymake-goto-next-error)
+          (define-key map (kbd "C-c b")
+            'flymake-goto-prev-error)
+          map)))
 
 ;; clojure-mode - https://github.com/clojure-emacs/clojure-mode
 ;; contains:
